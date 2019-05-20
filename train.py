@@ -5,20 +5,29 @@ import pandas as pd
 
 
 price_index = {}
+list_of_tickets = []
 
 origin = 'BFD'
 destination = 'BTH'
 
 class Ticket:
-    pass
+    def __init__(self, **kwargs):
+        for argument in kwargs:
+            if   argument == 'origin'      : self.origin = kwargs[argument]
+            elif argument == 'destination' : self.destination = kwargs[argument]
+            elif argument == 'date'        : self.date = kwargs[argument]
+            elif argument == 'price'       : self.price = kwargs[argument]
+        
+    #def __repr__(self):
+    #    return self.origin, self.destination, self.price
 
 
 def define_holidays():
     """ Function to find holiadys """
     calendar_holidays = []
     uk_holidays = ['060519', '270519', '260819', '251219', '261219']
-    calendar = pd.date_range(start=datetime.date.today(), periods=30)
-    calendar_business_days = pd.date_range(start=datetime.date.today(), periods=30, freq='B')
+    calendar = pd.date_range(start=datetime.date.today(), periods=7)
+    calendar_business_days = pd.date_range(start=datetime.date.today(), periods=7, freq='B')
 
     for day in calendar:
         if day not in calendar_business_days or day.strftime('%d%m%y') in uk_holidays :
@@ -56,12 +65,12 @@ def call_for_fares(l_date, r_date, origin, destination):
         cheapest_tickets = re.findall(r'£\d{1,3}.\d\d', str(cheapest_tickets))
         cheapest_return = float(cheapest_tickets[0].replace('£', ''))
         cheapest_2singles = float(cheapest_tickets[1].replace('£', ''))
-        if cheapest_return < cheapest_2singles:
-            #print(f'Cheapest option is Return £{cheapest_return}')
-            price_index[leaving_date] = cheapest_return
-        else:
-            #print(f'It is better to buy 2 tickets for £{cheapest_2singles}')
-            price_index[leaving_date] = cheapest_2singles
+        list_of_tickets.append(Ticket(
+            origin = origin,
+            destination = destination,
+            date = leaving_date,
+            price = min(cheapest_return, cheapest_2singles)
+            ))
 
         # script_blocks = soup.findAll('script')
         # travel_details_raw = re.findall(r'{"jsonJourneyBreakdown":(.+?)}]}', str(script_blocks))
@@ -94,19 +103,12 @@ calendar_holidays = define_holidays()
 for day in calendar_holidays:
     call_for_fares(l_date=day, r_date=day, origin=origin, destination=destination)
 
-values = []
-for item in price_index:
-    print(item, price_index[item])
-    #values.append(price_index[item])
+for item in list_of_tickets:
+    print(item.origin, item.destination, item.date, item.price)
 
-# print(f'Max price: £{max(values)} \nAverage price: £{sum(values) / len(values)} \nMin price: £{min(values)}')
-
-# for item in price_index:
-#     if price_index[item] <= min(values) * 1.20:
-#         print(item, price_index[item])
-
-
-
+prices = []
+for price in list_of_tickets:
+    prices.append(price.price)
 
 # cut = soup.findAll(lambda tag: tag.name == 'td' and tag.get('class') == ['fare'])
 
