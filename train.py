@@ -2,6 +2,14 @@ import requests, re, sys, datetime
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
 import pandas as pd
+from dataclasses import dataclass
+
+@dataclass
+class Ticket:
+    origin      : str
+    destination : str
+    date        : int
+    price       : float
 
 
 price_index = {}
@@ -9,19 +17,7 @@ list_of_tickets = []
 
 origin = 'BFD'
 destination = 'BTH'
-
-class Ticket:
-    def __init__(self, **kwargs):
-        for argument in kwargs:
-            if   argument == 'origin'      : self.origin = kwargs[argument]
-            elif argument == 'destination' : self.destination = kwargs[argument]
-            elif argument == 'date'        : self.date = kwargs[argument]
-            elif argument == 'price'       : self.price = kwargs[argument]
-        
-    #def __repr__(self):
-    #    return self.origin, self.destination, self.price
-
-
+   
 def define_holidays():
     """ Function to find holiadys """
     calendar_holidays = []
