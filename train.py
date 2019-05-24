@@ -1,4 +1,4 @@
-import requests, re, sys, datetime
+import requests, re, sys, datetime, csv
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -16,14 +16,15 @@ price_index = {}
 list_of_tickets = []
 
 origin = 'BFD'
-destination = 'BTH'
+#destination = 'SAL'
+destinations = ['SAL', 'CBG', 'OXF', 'BTH', 'WNR', 'CBW', 'WIN', 'BTN', 'EBN']
    
 def define_holidays():
     """ Function to find holiadys """
     calendar_holidays = []
     uk_holidays = ['060519', '270519', '260819', '251219', '261219']
-    calendar = pd.date_range(start=datetime.date.today(), periods=7)
-    calendar_business_days = pd.date_range(start=datetime.date.today(), periods=7, freq='B')
+    calendar = pd.date_range(start=datetime.date.today(), periods=60)
+    calendar_business_days = pd.date_range(start=datetime.date.today(), periods=60, freq='B')
 
     for day in calendar:
         if day not in calendar_business_days or day.strftime('%d%m%y') in uk_holidays :
@@ -96,15 +97,23 @@ def call_for_fares(l_date, r_date, origin, destination):
     
 
 calendar_holidays = define_holidays()
-for day in calendar_holidays:
-    call_for_fares(l_date=day, r_date=day, origin=origin, destination=destination)
+for destination in destinations:
+    for day in calendar_holidays:
+        call_for_fares(l_date=day, r_date=day, origin=origin, destination=destination)
 
-for item in list_of_tickets:
-    print(item.origin, item.destination, item.date, item.price)
+with open ('output.csv', 'w') as csv_file:
+    for item in list_of_tickets:
+        print(item.origin, item.destination, item.date, item.price)
+        csv_writer = csv.writer(csv_file, delimiter=",")
+        csv_writer.writerow([item.origin, item.destination, item.date, item.price])
 
-prices = []
-for price in list_of_tickets:
-    prices.append(price.price)
+
+    
+
+
+# prices = []
+# for price in list_of_tickets:
+#     prices.append(price.price)
 
 # cut = soup.findAll(lambda tag: tag.name == 'td' and tag.get('class') == ['fare'])
 
