@@ -8,16 +8,13 @@ from dataclasses import dataclass
 class Ticket:
     origin      : str
     destination : str
-    date        : int
+    date        : datetime
     price       : float
 
-
-price_index = {}
 list_of_tickets = []
 
 origin = 'BFD'
-#destination = 'SAL'
-destinations = ['SAL', 'CBG', 'OXF', 'BTH', 'WNR', 'CBW', 'WIN', 'BTN', 'EBN']
+destinations = ['SAL']#, 'CBG', 'OXF', 'BTH', 'CBW', 'WIN', 'BTN', 'EBN']
    
 def define_holidays():
     """ Function to find holiadys """
@@ -65,8 +62,8 @@ def call_for_fares(l_date, r_date, origin, destination):
         list_of_tickets.append(Ticket(
             origin = origin,
             destination = destination,
-            date = leaving_date,
-            price = min(cheapest_return, cheapest_2singles)
+            date = datetime.datetime.strptime(leaving_date, '%d%m%y'),
+            price = float(min(cheapest_return, cheapest_2singles))
             ))
 
         # script_blocks = soup.findAll('script')
@@ -93,7 +90,7 @@ def call_for_fares(l_date, r_date, origin, destination):
     except Exception as e:
         print(e)
     
-    return price_index
+    return list_of_tickets
     
 
 calendar_holidays = define_holidays()
@@ -105,15 +102,8 @@ with open ('output.csv', 'w') as csv_file:
     for item in list_of_tickets:
         print(item.origin, item.destination, item.date, item.price)
         csv_writer = csv.writer(csv_file, delimiter=",")
-        csv_writer.writerow([item.origin, item.destination, item.date, item.price])
+        csv_writer.writerow([item.origin, item.destination, item.date.strftime('%d-%b-%Y'), item.price])
 
-
-    
-
-
-# prices = []
-# for price in list_of_tickets:
-#     prices.append(price.price)
 
 # cut = soup.findAll(lambda tag: tag.name == 'td' and tag.get('class') == ['fare'])
 
