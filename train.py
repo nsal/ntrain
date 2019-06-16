@@ -6,18 +6,9 @@ import csv
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
 import pandas as pd
-from dataclasses import dataclass
-import time
 from multiprocessing.dummy import Pool as ThreadPool
 import itertools
-
-
-@dataclass
-class Ticket:
-    origin: str
-    destination: str
-    date: int
-    price: float
+from ticket import Ticket
 
 
 origin = 'BFD'
@@ -26,6 +17,7 @@ destinations = ['SAL', 'CBG', 'BTH', 'CBW', 'WIN', 'BTN', 'RYE', 'DVP',
 list_of_tickets = []
 website_errors = ['National Rail Enquiries - Oh no! There\'s been a problem!',
                   '504 - Gateway Timeout']
+price_index = {}
 
 
 def define_holidays():
@@ -79,12 +71,14 @@ def call_for_fares(l_date, origin, destination):
         cheapest_tickets = re.findall(r'£\d{1,3}.\d\d', str(cheapest_tickets))
         cheapest_return = float(cheapest_tickets[0].replace('£', ''))
         cheapest_2singles = float(cheapest_tickets[1].replace('£', ''))
+        min_price = float(min(cheapest_return, cheapest_2singles))
         list_of_tickets.append(
             Ticket(
                    origin=origin,
                    destination=destination,
                    date=datetime.datetime.strptime(leaving_date, '%d%m%y'),
-                   price=float(min(cheapest_return, cheapest_2singles))))
+                   price=min_price))
+        price_list.append(min_price)
 
         # script_blocks = soup.findAll('script')
         # travel_details_raw = re.findall(r'{"jsonJourneyBreakdown":(.+?)}]}',
@@ -121,52 +115,63 @@ def call_for_fares(l_date, origin, destination):
 
     return list_of_tickets
 
-start = time.time()
-calendar_holidays = define_holidays()
 
-pool = ThreadPool(16)
+if __name__ == "__main__":
 
-for destination in destinations:
-    results = pool.starmap(call_for_fares, zip(calendar_holidays, itertools.repeat(origin), itertools.repeat(destination)))
-pool.close()
-pool.join()
+    calendar_holidays = define_holidays()
 
+    pool = ThreadPool(16)
 
-#for destination in destinations:
+    for destination in destinations:
+        price_list = []
+        results = pool.starmap(call_for_fares,
+                               zip(calendar_holidays,
+                                   itertools.repeat(origin),
+                                   itertools.repeat(destination)))
+        price_index[destination] = min(price_list)
+    pool.close()
+    pool.join()
+
+    # for destination in destinations:
+    #     for day in calendar_holidays:
+    #         call_for_fares(
+    #                         l_date=day,
+    #                         r_date=day,
+    #                         origin=origin,
+    #                         destination=destination)
+
+    with open('output.csv', 'w') as csv_file:
+        csv_writer = csv.writer(csv_file, delimiter=",")
+        csv_writer.writerow(['Origin', 'Destination', 'Date', 'Price'])
+        for item in list_of_tickets:
+            print(item.origin, item.destination, item.date, item.price)
+
+            csv_writer.writerow([
+                                item.origin,
+                                item.destination,
+                                item.date.strftime('%d-%b-%Y'),
+                                item.price])
+    for key in price_index:
+        print(key, price_index[key])
     
-#     for day in calendar_holidays:
-#         call_for_fares(
-#                         l_date=day,
-#                         r_date=day,
-#                         origin=origin,
-#                         destination=destination)
-
-with open('output.csv', 'w') as csv_file:
-    csv_writer = csv.writer(csv_file, delimiter=",")
-    csv_writer.writerow(['Origin', 'Destination', 'Date', 'Price'])
-    for item in list_of_tickets:
-        print(item.origin, item.destination, item.date, item.price)
-
-        csv_writer.writerow([
-                            item.origin,
-                            item.destination,
-                            item.date.strftime('%d-%b-%Y'),
-                            item.price])
-end = time.time()
-print(end - start)
-
-# cut = soup.findAll(lambda tag: tag.name == 'td' and
-#                    tag.get('class') == ['fare'])
+    for key in price_index:
+        temp_array = [ticket for ticket in list_of_tickets if ticket.destination == key and ticket.price == price_index[key]]
+        for item in temp_array:
+            print(item)
 
 
-# for c in cut:
-#     arr = re.findall(r'{"jsonJourneyBreakdown":(.+?)}]}', str(c))
-#     if arr:
-#         departure_time = re.search(r'"departureTime":"\d\d:\d\d', arr[0])
-#         arrival_time = re.search(r'"arrivalTime":"\d\d:\d\d', arr[0])
-#         ticket_price = re.search(r'"ticketPrice":\d{1,3}.\d{1,2}', arr[0])
-#         ticket_price = float(ticket_price[0].split(':')[1]) * 2
-#         ticket_price = round((ticket_price - (ticket_price * 0.34)), 2)
-#         print('Departure time:', departure_time[0].split('"')[3], '\t',
-#               'Arrival time:', arrival_time[0].split('"')[3], '\t', 'Price',
-#                ticket_price )
+    # cut = soup.findAll(lambda tag: tag.name == 'td' and
+    #                    tag.get('class') == ['fare'])
+
+    # for c in cut:
+    #     arr = re.findall(r'{"jsonJourneyBreakdown":(.+?)}]}', str(c))
+    #     if arr:
+    #         departure_time = re.search(r'"departureTime":"\d\d:\d\d', arr[0])
+    #         arrival_time = re.search(r'"arrivalTime":"\d\d:\d\d', arr[0])
+    #         ticket_price = re.search(r'"ticketPrice":\d{1,3}.\d{1,2}',
+    #                                  arr[0])
+    #         ticket_price = float(ticket_price[0].split(':')[1]) * 2
+    #         ticket_price = round((ticket_price - (ticket_price * 0.34)), 2)
+    #         print('Departure time:', departure_time[0].split('"')[3], '\t',
+    #               'Arrival time:', arrival_time[0].split('"')[3], '\t',
+    #               'Price', ticket_price )
