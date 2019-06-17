@@ -38,7 +38,6 @@ def define_holidays():
         if day not in calendar_business_days or \
            day.strftime('%d%m%y') in uk_holidays:
             calendar_holidays.append(day.strftime('%d%m%y'))
-
     return calendar_holidays
 
 
@@ -132,14 +131,6 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
 
-    # for destination in destinations:
-    #     for day in calendar_holidays:
-    #         call_for_fares(
-    #                         l_date=day,
-    #                         r_date=day,
-    #                         origin=origin,
-    #                         destination=destination)
-
     with open('output.csv', 'w') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=",")
         csv_writer.writerow(['Origin', 'Destination', 'Date', 'Price'])
@@ -153,16 +144,16 @@ if __name__ == "__main__":
                                 item.price])
     for key in price_index:
         print(key, price_index[key])
-    
+
     for key in price_index:
-        temp_array = [ticket for ticket in list_of_tickets if ticket.destination == key and ticket.price == price_index[key]]
+        temp_array = [ticket for ticket in list_of_tickets
+                      if ticket.destination == key
+                      and ticket.price == price_index[key]]
         for item in temp_array:
             print(item)
 
-
     # cut = soup.findAll(lambda tag: tag.name == 'td' and
-    #                    tag.get('class') == ['fare'])
-
+    #       tag.get('class') == ['fare'])
     # for c in cut:
     #     arr = re.findall(r'{"jsonJourneyBreakdown":(.+?)}]}', str(c))
     #     if arr:

@@ -1,3 +1,9 @@
+"""Class to store ticket data:
+ - origin
+ - destination
+ - date
+ - price
+"""
 from dataclasses import dataclass
 
 
