@@ -1,0 +1,5 @@
+requests
+datetime
+fake_useragent
+bs4
+pandas
