@@ -15,8 +15,8 @@ origin = 'BFD'
 destinations = ['SAL', 'CBG', 'BTH', 'CBW', 'WIN', 'BTN', 'RYE', 'DVP',
                 'NRW', 'BRI']
 list_of_tickets = []
-website_errors = ['National Rail Enquiries - Oh no! There\'s been a problem!',
-                  '504 - Gateway Timeout']
+# website_errors = ['National Rail Enquiries - Oh no! There\'s been a problem!',
+#                   '504 - Gateway Timeout']
 price_index = {}
 
 
@@ -27,17 +27,17 @@ def define_holidays():
 
     calendar = pd.date_range(
                              start=datetime.date.today(),
-                             periods=60)
+                             periods=70)
 
     calendar_business_days = pd.date_range(
                                             start=datetime.date.today(),
-                                            periods=60,
+                                            periods=70,
                                             freq='B')
 
     for day in calendar:
         if day not in calendar_business_days or \
            day.strftime('%d%m%y') in uk_holidays:
-            calendar_holidays.append(day.strftime('%d%m%y'))
+           calendar_holidays.append(day.strftime('%d%m%y'))
     return calendar_holidays
 
 
@@ -57,11 +57,14 @@ def call_for_fares(l_date, origin, destination):
             leaving_time + '/dep/' + return_date + '/' + return_time + '/dep')
 
     r = requests.get(link, headers={'User-Agent': UserAgent().random})
-    soup = BeautifulSoup(r.content, 'html.parser')
-
-    if soup.title.text in website_errors:
+    if r.status_code != 200:
         print('Website is down')
         sys.exit(0)
+    soup = BeautifulSoup(r.content, 'html.parser')
+
+    # if soup.title.text in website_errors:
+    #     print('Website is down')
+    #     sys.exit(0)
 
     try:
         cheapest_tickets = soup.find(lambda tag: tag.name == 'th' and
@@ -131,7 +134,7 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
 
-    with open('output.csv', 'w') as csv_file:
+    with open('output2.csv', 'w') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=",")
         csv_writer.writerow(['Origin', 'Destination', 'Date', 'Price'])
         for item in list_of_tickets:
@@ -140,7 +143,7 @@ if __name__ == "__main__":
             csv_writer.writerow([
                                 item.origin,
                                 item.destination,
-                                item.date.strftime('%d-%b-%Y'),
+                                item.date.strftime('%d-%m-%Y'),
                                 item.price])
     for key in price_index:
         print(key, price_index[key])
