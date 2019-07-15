@@ -15,8 +15,6 @@ origin = 'BFD'
 destinations = ['SAL', 'CBG', 'BTH', 'CBW', 'RYE', 'DVP',
                 'NRW', 'BRI', 'BMH']
 list_of_tickets = []
-# website_errors = ['National Rail Enquiries - Oh no! There\'s been a problem!',
-#                   '504 - Gateway Timeout']
 price_index = {}
 
 
@@ -37,7 +35,7 @@ def define_holidays():
     for day in calendar:
         if day not in calendar_business_days or \
            day.strftime('%d%m%y') in uk_holidays:
-           calendar_holidays.append(day.strftime('%d%m%y'))
+            calendar_holidays.append(day.strftime('%d%m%y'))
     return calendar_holidays
 
 

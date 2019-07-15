@@ -25,13 +25,13 @@ with open('output2.csv', 'r') as new_file:
         for old_row in old_data:
             if old_row[:3] == new_row[:3] and old_row[3] != float(new_row[3]):
                 if old_row[3] < float(new_row[3]):
-                    print(f"Price has increased for {old_row[0]} -> \
-                          {old_row[1]} on {old_row[2]} from £{old_row[3]}\
-                          to £{float(new_row[3])}")
+                    print(f"Price has increased for {old_row[0]} -> "
+                          f"{old_row[1]} on {old_row[2]} from £{old_row[3]} "
+                          f"to £{float(new_row[3])}")
                 else:
-                    print(f"Price has DECREASED for {old_row[0]} -> \
-                          {old_row[1]} on {old_row[2]} from £{old_row[3]}\
-                          to £{float(new_row[3])}")
+                    print(f"Price has DECREASED for {old_row[0]} -> "
+                          f"{old_row[1]} on {old_row[2]} from £{old_row[3]} "
+                          f"to £{float(new_row[3])}")
                 old_row[3] = float(new_row[3])
                 break
 
