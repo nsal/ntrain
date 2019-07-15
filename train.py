@@ -12,8 +12,8 @@ from ticket import Ticket
 
 
 origin = 'BFD'
-destinations = ['SAL', 'CBG', 'BTH', 'CBW', 'WIN', 'BTN', 'RYE', 'DVP',
-                'NRW', 'BRI']
+destinations = ['SAL', 'CBG', 'BTH', 'CBW', 'RYE', 'DVP',
+                'NRW', 'BRI', 'BMH']
 list_of_tickets = []
 # website_errors = ['National Rail Enquiries - Oh no! There\'s been a problem!',
 #                   '504 - Gateway Timeout']
