@@ -60,10 +60,6 @@ def call_for_fares(l_date, origin, destination):
         sys.exit(0)
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    # if soup.title.text in website_errors:
-    #     print('Website is down')
-    #     sys.exit(0)
-
     try:
         cheapest_tickets = soup.find(lambda tag: tag.name == 'th' and
                                      tag.get('class') == ['fare']).findAll('a')
@@ -110,8 +106,8 @@ def call_for_fares(l_date, origin, destination):
 
         # with open ('2test.html', 'w') as ofile:
         #     ofile.write(soup.prettify())
-    except Exception as e:
-        print(e)
+    except AttributeError as e:
+        print(e, link)
 
     return list_of_tickets
 
