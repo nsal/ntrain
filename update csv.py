@@ -3,6 +3,7 @@ from datetime import datetime
 new_data = []
 old_data = []
 temp_data = []
+change_flag = 0
 
 with open('output.csv', 'r') as old_file:
     csv_reader_old = csv.reader(old_file, delimiter=',')
@@ -25,10 +26,12 @@ with open('output2.csv', 'r') as new_file:
         for old_row in old_data:
             if old_row[:3] == new_row[:3] and old_row[3] != float(new_row[3]):
                 if old_row[3] < float(new_row[3]):
+                    change_flag = 1
                     print(f"Price has increased for {old_row[0]} -> "
                           f"{old_row[1]} on {old_row[2]} from £{old_row[3]} "
                           f"to £{float(new_row[3])}")
                 else:
+                    change_flag = 1
                     print(f"Price has DECREASED for {old_row[0]} -> "
                           f"{old_row[1]} on {old_row[2]} from £{old_row[3]} "
                           f"to £{float(new_row[3])}")
@@ -37,6 +40,7 @@ with open('output2.csv', 'r') as new_file:
 
 for n in new_data:
     if n not in old_data:
+        change_flag = 1
         old_data.append(n)
         print(f"New Ticket: {n[0]} -> {n[1]} on {n[2]} for £{float(n[3])} ")
 
@@ -49,3 +53,6 @@ with open('output.csv', 'w') as updated_file:
     csv_writer.writerow(['Origin', 'Destination', 'Date', 'Price'])
     for row in old_data:
         csv_writer.writerow(row)
+
+if change_flag == 0:
+    print('No changes')
