@@ -20,7 +20,13 @@ class Ticket:
     origin: str
     destination: str
     date: int
-    price: float
+    departure_time: str
+    arrival_time: str
+    duration: str
+    changes: int
+    single_price: float
+    return_price: float
+    status: str
 
     def __str__(self):
         return f"From: {self.origin} to {self.destination} \
@@ -34,11 +40,11 @@ def define_holidays():
 
     calendar = pd.date_range(
                              start=datetime.date.today(),
-                             periods=70)
+                             periods=3)
 
     calendar_business_days = pd.date_range(
                                             start=datetime.date.today(),
-                                            periods=70,
+                                            periods=3,
                                             freq='B')
 
     for day in calendar:

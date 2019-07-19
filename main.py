@@ -28,11 +28,15 @@ def cook_soup(soup):
     
     tr_pattern = r'{"jsonJourneyBreakdown":(.+?)}]}'
     try:
+        min_price_list = []
         cheapest_tickets = soup.find('th',
                                      attrs={'class': 'fare'}).findAll('a')
-        cheapest_tickets = (re.findall(r'£\d{1,3}.\d\d', str(cheapest_tickets)))
-        
-        cheapest_ticket = min(cheapest_tickets)
+        for ticket in cheapest_tickets:
+            ticket_price = ticket.find('strong', attrs={'class':'ctf-pr'}).text
+            ticket_price = float(ticket_price.replace('£', ''))
+            min_price_list.append(ticket_price)
+
+        cheapest_ticket = min(min_price_list)
         print(cheapest_ticket)
 
         script_blocks = soup.findAll('script')
@@ -46,20 +50,22 @@ def cook_soup(soup):
                 if ':' in item:
                     dict_items = item.split(':', 1)
                     journeys[dict_items[0]] = dict_items[1]
-            print(f"{journeys['departureStationName']} " \
-                f"{journeys['departureTime']} -> "
-                f"{journeys['arrivalStationName']} " \
-                f"{journeys['arrivalTime']} " \
-                f"{journeys['statusMessage']} " \
-                f"{journeys['statusIcon']} " \
-                f"£{journeys['SfullFarePrice']} " \
-                f"£{journeys['ticketPrice']} "  
-                )
+            if float(journeys['ticketPrice']) <= cheapest_ticket or \
+               float(journeys['SfullFarePrice']) <= cheapest_ticket:
+                print(f"{journeys['departureStationName']} " \
+                    f"{journeys['departureTime']} -> "
+                    f"{journeys['arrivalStationName']} " \
+                    f"{journeys['arrivalTime']} " \
+                    f"{journeys['statusMessage']} " \
+                    f"{journeys['statusIcon']} " \
+                    f"£{journeys['SfullFarePrice']} " \
+                    f"£{journeys['ticketPrice']} "  
+                    )
 
          
     except AttributeError:
         print('No data for ticket')
-    return journeys
+    return None #journeys
 
 
 soup = call_for_fares(origin='BFD',
