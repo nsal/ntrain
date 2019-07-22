@@ -25,6 +25,7 @@ def call_for_fares(l_date, origin, destination, r_date=None):
     return_date = r_date or l_date
     leaving_time = '0700'
     return_time = '1830'
+    price_array = []
     # Passenger = 2
     # rail_card_discount = 0.34
 
@@ -43,9 +44,9 @@ def call_for_fares(l_date, origin, destination, r_date=None):
                                      tag.get('class') == ['fare']).findAll('a')
 
         cheapest_tickets = re.findall(r'£\d{1,3}.\d\d', str(cheapest_tickets))
-        cheapest_return = float(cheapest_tickets[0].replace('£', ''))
-        cheapest_2singles = float(cheapest_tickets[1].replace('£', ''))
-        min_price = float(min(cheapest_return, cheapest_2singles))
+        for ticket in cheapest_tickets:
+            price_array.append(float(ticket.replace('£', '')))
+        min_price = min(price_array)
         list_of_tickets.append(
             Ticket(
                    origin=origin,
