@@ -1,8 +1,9 @@
 import requests
 import re
 import sys
-import datetime
+from datetime import datetime
 import csv
+import operator
 from fake_useragent import UserAgent
 from bs4 import BeautifulSoup
 from multiprocessing.dummy import Pool as ThreadPool
@@ -20,14 +21,18 @@ price_list = []  # list to store min price per date for certain destination
 
 def find_min_price(soup, link):
     """ """
+    min_price = 999
+    price_array = []
     try:
         cheapest_tickets = soup.find(lambda tag: tag.name == 'th' and
                                      tag.get('class') == ['fare']).findAll('a')
 
         cheapest_tickets = re.findall(r'£\d{1,3}.\d\d', str(cheapest_tickets))
-        cheapest_return = float(cheapest_tickets[0].replace('£', ''))
-        cheapest_2singles = float(cheapest_tickets[1].replace('£', ''))
-        min_price = float(min(cheapest_return, cheapest_2singles))
+        for ticket in cheapest_tickets:
+            price_array.append(float(ticket.replace('£', '')))
+        # cheapest_return = float(cheapest_tickets[0].replace('£', ''))
+        # cheapest_2singles = float(cheapest_tickets[1].replace('£', ''))
+        min_price = min(price_array)
     except AttributeError as e:
         print(e, link)
     return min_price
@@ -38,7 +43,9 @@ def update_price_list(price, price_list=price_list):
     price_list.append(price)
     return price_list
 
-def get_ride_details(soup, leaving_date, return_date, list_of_tickets=list_of_tickets):
+
+def get_ride_details(soup, leaving_date, link, origin,
+                     list_of_tickets=list_of_tickets):
     """ """
     tr_pattern = r'{"jsonJourneyBreakdown":(.+?)}]}'
 
@@ -54,30 +61,43 @@ def get_ride_details(soup, leaving_date, return_date, list_of_tickets=list_of_ti
                 temp_dict = ride.split(':', 1)
                 daily_rides[temp_dict[0]] = temp_dict[1]
 
-        # print(f"{daily_rides['departureStationName']} " \
-        #             f"{daily_rides['departureTime']} -> "
-        #             f"{daily_rides['arrivalStationName']} " \
-        #             f"{daily_rides['arrivalTime']} " \
-        #             f"{daily_rides['statusMessage']} " \
-        #             f"{daily_rides['statusIcon']} " \
-        #             f"£{daily_rides['SfullFarePrice']} " \
-        #             f"£{daily_rides['ticketPrice']} "  
-        #             )
         duration = daily_rides['durationHours'] + ":" + \
-                   daily_rides['durationMinutes']
+            daily_rides['durationMinutes']
 
-        ticket = Ticket(origin=daily_rides['departureStationCRS'],
-                departure_time=daily_rides['departureTime'],
+        if daily_rides['statusIcon'] == 'GREEN_TICK':
+            status = 'OK'
+        elif daily_rides['statusMessage'] == 'null':
+            status = 'Warning'
+        elif daily_rides['statusIcon'] == 'BLUE_TRIANGLE' or \
+            daily_rides['statusIcon'] == 'AMBER_TRIANGLE' or \
+                daily_rides['statusIcon'] == 'RED_TRIANGLE':
+            status = daily_rides['statusMessage']
+        else:
+            status = 'Warning'
+
+        if daily_rides['departureStationCRS'] == origin:
+            direction = 'Onwards'
+        else:
+            direction = 'Return'
+
+        ticket = Ticket(
+                origin=daily_rides['departureStationCRS'],
+                departure_time=datetime.strptime(
+                               daily_rides['departureTime'], '%H:%M'),
                 destination=daily_rides['arrivalStationCRS'],
-                arrival_time=daily_rides['arrivalTime'],
-                date=leaving_date,
-                single_price=daily_rides['SfullFarePrice'],
-                return_price=daily_rides['ticketPrice'],
-                status=daily_rides['statusIcon'],
-                duration=duration,
-                changes=daily_rides['changes'])
+                arrival_time=datetime.strptime(
+                             daily_rides['arrivalTime'], '%H:%M'),
+                date=datetime.strptime(leaving_date, '%d%m%y').date(),
+                single_price=float(daily_rides['SfullFarePrice']),
+                return_price=float(daily_rides['ticketPrice']),
+                status=status,
+                duration=datetime.strptime(duration, '%H:%M'),
+                changes=int(daily_rides['changes']),
+                direction=direction,
+                link=link)
         list_of_tickets.append(ticket)
-    return list_of_tickets  
+    return list_of_tickets
+
 
 def call_for_fares(l_date, origin, destination, r_date=None):
     """ Call national rails for prices """
@@ -102,25 +122,22 @@ def call_for_fares(l_date, origin, destination, r_date=None):
     soup = BeautifulSoup(r.content, 'html.parser')
     min_price = find_min_price(soup, link)
     update_price_list(price=min_price)
-    #get_ride_details(soup)
+    # get_ride_details(soup)
     # ticket = Ticket(
     #             origin=origin,
     #             destination=destination,
     #             date=datetime.datetime.strptime(leaving_date, '%d%m%y'),
     #             price=min_price)
 
-    get_ride_details(soup,leaving_date, return_date)
-    
+    get_ride_details(soup=soup, leaving_date=leaving_date, link=link,
+                     origin=origin)
 
     return None
 
 
 if __name__ == "__main__":
-
     calendar_holidays = define_holidays()
-
     pool = ThreadPool(16)
-
     for destination in destinations:
         price_list.clear()  # clear list of prices for each destination
         pool.starmap(call_for_fares,
@@ -132,31 +149,38 @@ if __name__ == "__main__":
     pool.close()
     pool.join()
 
+    list_of_tickets.sort(key=operator.attrgetter('date'))
+
     with open('output2.csv', 'w') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=",")
-        csv_writer.writerow(['Origin', 'Destination', 'Date', 'Departure',\
-                             'Arrival', 'Duration', 'Changes', \
-                             'Single Price', 'Return Price', 'Status'])
+        csv_writer.writerow(['Origin', 'Destination', 'Date', 'Departure',
+                             'Arrival', 'Duration', 'Changes',
+                             'Single Price', 'Return Price', 'Status',
+                             'direction', 'link'])
         for ticket in list_of_tickets:
             # print(item.origin, item.destination, item.date, item.price)
 
             csv_writer.writerow([
                                 ticket.origin,
                                 ticket.destination,
-                                ticket.date, #.strftime('%d-%m-%Y'),
-                                ticket.departure_time,
-                                ticket.arrival_time,
-                                ticket.duration,
+                                ticket.date.strftime('%d%m%Y'),
+                                ticket.departure_time.strftime('%H:%M'),
+                                ticket.arrival_time.strftime('%H:%M'),
+                                ticket.duration.strftime('%H:%M'),
                                 ticket.changes,
                                 ticket.single_price,
                                 ticket.return_price,
-                                ticket.status])
+                                ticket.status,
+                                ticket.direction,
+                                ticket.link])
     for key in price_index:
         print(key, price_index[key])
-
+    
     # for key in price_index:
     #     temp_array = [ticket for ticket in list_of_tickets
     #                   if ticket.destination == key
     #                   and ticket.price == price_index[key]]
     #     for item in temp_array:
     #         print(item)
+
+
