@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content%}
+    <table>
+        <tr>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Date</th>
+            <th>Price</th>
+	    <th>Link</th>
+        </tr>
+
+        {% for ticket in list_of_tickets %}
+        <tr>
+            <td align='center'>{{ ticket.origin }}</td>
+            <td align='center'>{{ ticket.destination }}</td>
+            <td col width='140' align='center'>{{ ticket.date }}</td>
+            <td align='right'>£{{ ticket.price }}</td>
+	    <td><a target="_blank" rel="noopener noreferrer" href={{ ticket.link }}>View on National Rail</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

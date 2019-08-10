@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ form.hidden_tag() }}
+
+<form class="form-inline" method="POST" action="{{ url_for('result') }}">
+  <div class="form-group">
+    <div class="input-group">
+        <select name="origin_station" class="selectpicker form-control">
+
+            {% for station in origin_station %}
+              <option value="{{ origin_station[station]}}">{{ origin_station[station]}}</option>
+            {% endfor %}
+          </select>
+          
+          <select name="destination_station" class="selectpicker form-control">
+            {% for station in destination_station %}
+              <option value="{{ destination_station[station]}}">{{ destination_station[station]}}</option>
+            {% endfor %}
+          </select>
+      <!--<p>{{ form.same_day_return() }} {{form.same_day_return.label}} </p>-->
+        
+    </div>
+      <p><button type="submit" class="btn btn-default">Go</button></p>
+  </div>
+  <p>Please give me 30 seconds to process your request</p>
+
+{% endblock %}
