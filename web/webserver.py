@@ -30,9 +30,10 @@ def home():
 def result():
     origin = request.form.get('origin_station')
     destination = request.form.get('destination_station')
+    same_day_return = request.form.get('same_day_return')
     origin_station_code = [key for key,value in station_codes.items() if value == origin][0]
     destination_station_code = [key for key,value in station_codes.items() if value == destination][0]
-    list_of_tickets = launcher(origin_station_code, destination_station_code)
+    list_of_tickets = launcher(origin_station_code, destination_station_code, same_day_return)
 
     return render_template('result.html',
                            list_of_tickets=list_of_tickets)
