@@ -14,14 +14,10 @@ price_index = {}
 def call_for_fares(l_date, origin, destination, 
                    same_day_return, r_date=None):
     """ Call national rails for prices """
-    origin = origin
-    destination = destination
     leaving_date = l_date
     return_date = r_date or l_date
     leaving_time = '0700'
     return_time = '1830'
-    price_array = []
-
     if same_day_return:
         link = ('http://ojp.nationalrail.co.uk/service/timesandfares/' +
                 origin + '/' + destination + '/' + leaving_date + '/' +
@@ -46,11 +42,10 @@ def call_for_fares(l_date, origin, destination,
                                     r.text)
         if cheapest_ticket:
             cheapest_ticket = cheapest_ticket[0].split('; ')[1]
-            price_array.append(float(cheapest_ticket))
             list_of_tickets.append(
                 Ticket(
-                    origin=origin,
-                    destination=destination,
+                    origin_station_code=origin,
+                    destination_station_code=destination,
                     date=datetime.datetime.strptime(leaving_date,
                                                     '%d%m%y').date(),
                     price=cheapest_ticket,
@@ -60,18 +55,23 @@ def call_for_fares(l_date, origin, destination,
     return list_of_tickets
 
 
-def launcher(origin, destination, same_day_return):
+def launcher(origin, origin_station_code, destination,
+             destination_station_code, same_day_return, weekends_only):
     list_of_tickets.clear()
-    calendar_holidays = define_holidays()
+
+    calendar_holidays = define_holidays(weekends_only)
     pool = ThreadPool(12)
 
     pool.starmap(call_for_fares,
                     zip(calendar_holidays,
-                        itertools.repeat(origin),
-                        itertools.repeat(destination),
+                        itertools.repeat(origin_station_code),
+                        itertools.repeat(destination_station_code),
                         itertools.repeat(same_day_return)))
 
     pool.close()
     pool.join()
+    for ticket in list_of_tickets:
+        ticket.origin = origin
+        ticket.destination = destination
     list_of_tickets.sort(key=lambda x: x.date)
     return list_of_tickets
