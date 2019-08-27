@@ -1,26 +1,42 @@
 {% extends 'base.html' %}
-
 {% block content %}
 {{ form.hidden_tag() }}
-
-<form class="form-inline" method="POST" action="{{ url_for('result') }}">
-  <div class="form-group">
-        <select name="origin_station" class="selectpicker form-control">
-
-            {% for station in origin_station %}
-              <option value="{{ origin_station[station]}}">{{ origin_station[station]}}</option>
-            {% endfor %}
-          </select>
-          
-          <select name="destination_station" class="selectpicker form-control">
-            {% for station in destination_station %}
-              <option value="{{ destination_station[station]}}">{{ destination_station[station]}}</option>
-            {% endfor %}
-          </select>
-      <p>{{ form.same_day_return(checked=True) }} {{form.same_day_return.label}}</p>
-      <p>{{ form.weekends_only(checked=False) }} {{form.weekends_only.label}}</p>
-      <p><button type="submit" class="btn btn-default">Go</button></p>
-  </div>
-  <p>Please give me 10 seconds to process your request</p>
-
+<head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </head>
+    <form class="form-inline" method="POST" action="{{ url_for('result') }}">
+    {{ form.origin.label }}: {{ form.origin(autocomplete="off", autofocus=true) }}
+    {{ form.destination.label }}: {{ form.destination(autocomplete="off") }}
+    <script>
+        $(function() {
+            $.ajax({
+                url: '{{ url_for("autocomplete") }}'
+                }).done(function (data){
+                    $('#origin_station_autocomplete').autocomplete({
+                        source: data,
+                        minLength: 2
+                    });
+                });
+            });
+    </script>
+    <script>
+            $(function() {
+                $.ajax({
+                    url: '{{ url_for("autocomplete") }}'
+                    }).done(function (data){
+                        $('#destination_station_autocomplete').autocomplete({
+                            source: data,
+                            minLength: 2
+                        });
+                    });
+                });
+        </script>
+    <p>{{ form.same_day_return(checked=True) }} {{form.same_day_return.label}}</p>
+    <p>{{ form.weekends_only(checked=False) }} {{form.weekends_only.label}}</p>
+    <p><button type="submit" class="btn btn-default">Search</button></p>
+    </form>
+     
 {% endblock %}

@@ -1,14 +1,14 @@
-from flask import Flask, redirect, render_template, request, url_for
+from flask import Flask, Response, render_template, request, url_for
 from config import Config
+from forms import MainForm
 from parse import launcher
-from forms import LoginForm
 from ticket import flask_logging
-import logging
-import csv
-
+import json
+import csv 
 
 application = Flask(__name__)
 application.config.from_object(Config)
+
 station_codes = {}
 
 with open('station_codes.csv', 'r') as csv_file:
@@ -17,19 +17,21 @@ with open('station_codes.csv', 'r') as csv_file:
         station_codes[row[1]] = row[0]
 
 
-@application.route('/')
-def home():
-    form = LoginForm()
-    return render_template(
-                           'index.html', origin_station=station_codes,
-                           destination_station=station_codes, form=form)
+@application.route('/_autocomplete', methods=['GET'])
+def autocomplete():
+    return Response(json.dumps(list(station_codes.values())), mimetype='application/json')
 
+
+@application.route('/', methods=['GET', 'POST'])
+def home():
+    form = MainForm(request.form)
+    return render_template("index.html", form=form)
 
 @application.route("/result", methods=['GET', 'POST'])
 def result():
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
-    origin = request.form.get('origin_station')
-    destination = request.form.get('destination_station')
+    origin = request.form.get('origin')
+    destination = request.form.get('destination')
     same_day_return = request.form.get('same_day_return')
     weekends_only = request.form.get('weekends_only')
     origin_station_code = [key for key, value in station_codes.items()
@@ -45,7 +47,5 @@ def result():
     return render_template('result.html',
                            list_of_tickets=list_of_tickets)
 
-
 if __name__ == '__main__':
-    logging.basicConfig(filename='flask.log', level=logging.INFO)
     application.run()

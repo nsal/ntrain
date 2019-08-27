@@ -60,7 +60,7 @@ def define_holidays(weekends_only):
 def flask_logging(ip, origin_station_code, destination_station_code,
                   same_day_return, weekends_only):
 
-    with open('flask_access.log', 'a') as logfile:
+    with open('logs/flask_access.log', 'a') as logfile:
         csv_writer = csv.writer(logfile, delimiter=',')
         timestamp = datetime.datetime.strftime(datetime.datetime.now(),
                                                '%Y-%m-%d %H:%M:%S')
