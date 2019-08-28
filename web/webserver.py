@@ -1,6 +1,6 @@
 from flask import Flask, Response, render_template, request, url_for
+from flask_wtf import FlaskForm
 from config import Config
-from forms import MainForm
 from parse import launcher
 from ticket import flask_logging
 import json
@@ -19,16 +19,18 @@ with open('station_codes.csv', 'r') as csv_file:
 
 @application.route('/_autocomplete', methods=['GET'])
 def autocomplete():
-    return Response(json.dumps(list(station_codes.values())), mimetype='application/json')
+    return Response(json.dumps(list(station_codes.values())),
+                    mimetype='application/json')
 
 
 @application.route('/', methods=['GET', 'POST'])
 def home():
-    form = MainForm(request.form)
-    return render_template("index.html", form=form)
+    return render_template("index.html",
+                           stations=list(station_codes.values()))
 
 @application.route("/result", methods=['GET', 'POST'])
 def result():
+    form = FlaskForm(request.form)
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
     origin = request.form.get('origin')
     destination = request.form.get('destination')
