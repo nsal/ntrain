@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <style type ="text/css" >
+            .footer{ 
+                position: fixed;     
+                text-align: center;    
+                bottom: 0px; 
+                width: 100%;
+            }  
+        </style>
+        {% if title%}
+            <title>Rail Cheap - {{ title }}</title>
+        {% else %}
+            <title>Rail Cheap</title>
+        {% endif %}
+        
+    </head>
+    <body>
+        <div>Rail Cheap: <a href="{{ url_for('home')}}">Home</a></div>
+        <hr>
+        {% block content %} {% endblock %}
+        <div class="footer">#FuckTheDesign2019</div>
+    </body>
+</html>

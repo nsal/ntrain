@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<head>
+    <meta charset="utf-8">
+</head>
+    <form class="form-inline" method="POST" action="{{ url_for('result') }}">
+        <div>
+            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true">
+            <input name="destination" list="stations" placeholder="Where to?" required="true">
+                <datalist id="stations">
+                    {% for station in stations %}
+                        <option value="{{ station }}">{{ station }}</option>
+                    {% endfor %}
+                </datalist>
+        </div>
+        <div>
+            <p></p>
+            <input id="same_day_return" name="same_day_return" type="checkbox" checked="true" >
+            <label for="same_day_return">Same day return</label>
+            <input id="weekends_only" name="weekends_only" type="checkbox" checked="true">
+            <label for="weekends_only">Weekends only</label>
+        </div>
+        <p><button type="submit" class="btn btn-default">Search</button></p> 
+         
+    </form>
+     
+{% endblock %}

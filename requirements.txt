@@ -1,5 +1,6 @@
 requests
 datetime
-fake_useragent
-bs4
 pandas
+flask
+flask_wtf
+re
