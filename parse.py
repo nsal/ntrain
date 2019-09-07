@@ -62,10 +62,10 @@ def make_chart_bar(min_price, current_price):
 
 
 def launcher(origin, origin_station_code, destination,
-             destination_station_code, same_day_return, weekends_only):
+             destination_station_code, same_day_return, weekends_only, search_limit_days):
     list_of_tickets.clear()
 
-    calendar_holidays = define_holidays(weekends_only)
+    calendar_holidays = define_holidays(weekends_only, search_limit_days)
     pool = ThreadPool(12)
 
     pool.starmap(call_for_fares,

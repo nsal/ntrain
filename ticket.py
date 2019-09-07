@@ -5,8 +5,7 @@ Module contains:
     function flask_logging
 """
 from dataclasses import dataclass
-import datetime
-import pandas as pd
+from datetime import datetime, timedelta
 import csv
 
 
@@ -33,40 +32,35 @@ class Ticket:
                on {self.date} £{self.price}"
 
 
-def define_holidays(weekends_only):
+def define_holidays(weekends_only, search_limit_days):
     """ Function to find holiadys """
-    calendar_holidays = []
-    uk_holidays = ['060519', '270519', '260819', '251219', '261219']
-    calendar = pd.date_range(
-                             start=datetime.date.today(),
-                             periods=60)
 
-    calendar_business_days = pd.date_range(
-                                            start=datetime.date.today(),
-                                            periods=60,
-                                            freq='B')
+    search_days = int(search_limit_days)
+    bank_holidays = ['060519', '270519', '260919', '251219', '261219']
+    today = datetime.today()
 
-    for day in calendar:
-        if weekends_only:
-            if day not in calendar_business_days or \
-               day.strftime('%d%m%y') in uk_holidays:
-                calendar_holidays.append(day.strftime('%d%m%y'))
-        else:
-            calendar_holidays.append(day.strftime('%d%m%y'))
+    list_of_dates = [(today + timedelta(days=x)).date()
+                      for x in range(1, search_days)]
 
-    return calendar_holidays
+    if weekends_only:
+        weekends = [datetime.strftime(day, '%d%m%y') 
+                    for day in list_of_dates if day.weekday() in (5, 6) or day in bank_holidays ]
+        return weekends
+    
+    return [datetime.strftime(day, '%d%m%y') for day in list_of_dates]
 
 
 def flask_logging(ip, origin_station_code, destination_station_code,
-                  same_day_return, weekends_only):
+                  same_day_return, weekends_only, search_limit_days):
 
     with open('logs/flask_access.log', 'a') as logfile:
         csv_writer = csv.writer(logfile, delimiter=',')
-        timestamp = datetime.datetime.strftime(datetime.datetime.now(),
+        timestamp = datetime.strftime(datetime.now(),
                                                '%Y-%m-%d %H:%M:%S')
         csv_writer.writerow([timestamp,
                              ip,
                              origin_station_code,
                              destination_station_code,
                              same_day_return,
-                             weekends_only])
+                             weekends_only,
+                             search_limit_days])

@@ -1,17 +1,37 @@
 {% extends 'base.html' %}
 {% block content %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color:red" > {{ message }} </p>
+            <p></p>
+            <p></p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
     <form class="form-inline" method="POST" action="{{ url_for('result') }}">
         <div>
-            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true">
-            <input name="destination" list="stations" placeholder="Where to?" required="true">
+            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true" autocomplete="off">
+            <input name="destination" list="stations" placeholder="Where to?" required="true" autocomplete="off">
                 <datalist id="stations">
                     {% for station in stations %}
                         <option value="{{ station }}">{{ station }}</option>
                     {% endfor %}
                 </datalist>
         </div>
+        <p></p>
         <div>
-            <p></p>
+            <label for="search_limit_days">I'm travelling within: </label>
+            <select id="search_limit_days" name="search_limit_days">
+                <option value="31"> 1 month</option>
+                <option value="61" selected="selected" > 2 months </option>
+                <option value="84"> 3 months</option>
+            </select>
+            
+        </div>
+        <p></p>
+        <div>
             <input id="same_day_return" name="same_day_return" type="checkbox" checked="true" >
             <label for="same_day_return">Same day return</label>
             <input id="weekends_only" name="weekends_only" type="checkbox" checked="true">

@@ -1,5 +1,4 @@
-from flask import Flask, Response, render_template, request, url_for
-from flask_wtf import FlaskForm
+from flask import Flask, Response, render_template, request, url_for, flash, redirect
 from config import Config
 from parse import launcher
 from ticket import flask_logging
@@ -30,22 +29,44 @@ def home():
 
 @application.route("/result", methods=['GET', 'POST'])
 def result():
-    form = FlaskForm(request.form)
+
+    # block to grab user's input
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
     origin = request.form.get('origin')
-    destination = request.form.get('destination')
+    destination = request.form.get('destination')   
+    search_limit_days = request.form.get('search_limit_days')
     same_day_return = request.form.get('same_day_return')
     weekends_only = request.form.get('weekends_only')
+    # end block
+
+    # block to validate input data \ prevent users from typos
+    if origin not in station_codes.values() \
+       or destination not in station_codes.values():
+        flash('Check your input')
+        return redirect(url_for('home'))
+    # end block
+
     origin_station_code = [key for key, value in station_codes.items()
                            if value == origin][0]
     destination_station_code = [key for key, value in station_codes.items()
                                 if value == destination][0]
-    list_of_tickets = launcher(origin, origin_station_code, destination,
-                               destination_station_code, same_day_return,
-                               weekends_only)
 
-    flask_logging(ip, origin_station_code, destination_station_code,
-                  same_day_return, weekends_only)
+    list_of_tickets = launcher(
+        origin=origin,
+        origin_station_code=origin_station_code,
+        destination=destination,
+        destination_station_code=destination_station_code,
+        same_day_return=same_day_return,
+        weekends_only=weekends_only,
+        search_limit_days=search_limit_days)
+
+    flask_logging(ip=ip,
+                  origin_station_code=origin_station_code,
+                  destination_station_code=destination_station_code,
+                  same_day_return=same_day_return,
+                  weekends_only=weekends_only,
+                  search_limit_days=search_limit_days)
+
     return render_template('result.html',
                            list_of_tickets=list_of_tickets)
 
