@@ -1,6 +1,3 @@
 requests
-datetime
-pandas
 flask
-flask_wtf
 re

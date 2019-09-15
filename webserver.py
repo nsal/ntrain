@@ -35,7 +35,7 @@ def result():
     origin = request.form.get('origin')
     destination = request.form.get('destination')   
     search_limit_days = request.form.get('search_limit_days')
-    same_day_return = request.form.get('same_day_return')
+    return_option = request.form.get('return_option')
     weekends_only = request.form.get('weekends_only')
     # end block
 
@@ -56,14 +56,14 @@ def result():
         origin_station_code=origin_station_code,
         destination=destination,
         destination_station_code=destination_station_code,
-        same_day_return=same_day_return,
+        return_option=return_option,
         weekends_only=weekends_only,
         search_limit_days=search_limit_days)
 
     flask_logging(ip=ip,
                   origin_station_code=origin_station_code,
                   destination_station_code=destination_station_code,
-                  same_day_return=same_day_return,
+                  return_option=return_option,
                   weekends_only=weekends_only,
                   search_limit_days=search_limit_days)
 

@@ -1,6 +1,6 @@
 import requests
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from multiprocessing.dummy import Pool as ThreadPool
 import itertools
 from ticket import Ticket
@@ -12,21 +12,29 @@ price_index = {}
 
 
 def call_for_fares(l_date, origin, destination,
-                   same_day_return, r_date=None):
+                   return_option):
     """ Call national rails for prices """
-    leaving_date = l_date
-    return_date = r_date or l_date
+
     leaving_time = '0700'
     return_time = '1830'
-    if same_day_return:
+    leaving_date = l_date
+
+    if return_option == '999':
+        link = ('http://ojp.nationalrail.co.uk/service/timesandfares/' +
+        origin + '/' + destination + '/' + leaving_date + '/' +
+        leaving_time + '/dep/')
+
+    else:
+        return_option = int(return_option) - 1
+        return_date = datetime.strptime(l_date, '%d%m%y') + \
+                timedelta(days=return_option)
+        return_date = datetime.strftime(return_date, '%d%m%y')
+
         link = ('http://ojp.nationalrail.co.uk/service/timesandfares/' +
                 origin + '/' + destination + '/' + leaving_date + '/' +
                 leaving_time + '/dep/' + return_date + '/' + return_time +
                 '/dep')
-    else:
-        link = ('http://ojp.nationalrail.co.uk/service/timesandfares/' +
-                origin + '/' + destination + '/' + leaving_date + '/' +
-                leaving_time + '/dep/')
+
 
     user_agent = 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 \
                  (KHTML, like Gecko) Chrome/35.0.2117.157 Safari/537.36'
@@ -62,7 +70,8 @@ def make_chart_bar(min_price, current_price):
 
 
 def launcher(origin, origin_station_code, destination,
-             destination_station_code, same_day_return, weekends_only, search_limit_days):
+             destination_station_code, return_option,
+             weekends_only, search_limit_days):
     list_of_tickets.clear()
 
     calendar_holidays = define_holidays(weekends_only, search_limit_days)
@@ -72,7 +81,7 @@ def launcher(origin, origin_station_code, destination,
                  zip(calendar_holidays,
                      itertools.repeat(origin_station_code),
                      itertools.repeat(destination_station_code),
-                     itertools.repeat(same_day_return)))
+                     itertools.repeat(return_option)))
     pool.close()
     pool.join()
 

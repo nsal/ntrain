@@ -51,7 +51,7 @@ def define_holidays(weekends_only, search_limit_days):
 
 
 def flask_logging(ip, origin_station_code, destination_station_code,
-                  same_day_return, weekends_only, search_limit_days):
+                  return_option, weekends_only, search_limit_days):
 
     with open('logs/flask_access.log', 'a') as logfile:
         csv_writer = csv.writer(logfile, delimiter=',')
@@ -61,6 +61,6 @@ def flask_logging(ip, origin_station_code, destination_station_code,
                              ip,
                              origin_station_code,
                              destination_station_code,
-                             same_day_return,
+                             return_option,
                              weekends_only,
                              search_limit_days])

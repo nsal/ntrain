@@ -22,18 +22,30 @@
         </div>
         <p></p>
         <div>
+            <label for="return_option">Return: </label>
+            <select id="return_option" name="return_option">
+                <option value="999"> One way </option>
+                <option value="1" selected="selected" > Same day </option>
+                <option value="2"> Next day </option>
+                <option value="3"> +2 days </option>
+                <option value="4"> +3 days </option>
+                <option value="8"> +7 days </option>
+                <option value="9"> +7 days </option>
+                <option value="14"> +13 days </option>
+                <option value="15"> +14 days </option>
+            </select>
+        </div>
+        <p></p>
+        <div>
             <label for="search_limit_days">I'm travelling within: </label>
             <select id="search_limit_days" name="search_limit_days">
                 <option value="31"> 1 month</option>
                 <option value="61" selected="selected" > 2 months </option>
                 <option value="84"> 3 months</option>
             </select>
-            
         </div>
         <p></p>
         <div>
-            <input id="same_day_return" name="same_day_return" type="checkbox" checked="true" >
-            <label for="same_day_return">Same day return</label>
             <input id="weekends_only" name="weekends_only" type="checkbox" checked="true">
             <label for="weekends_only">Weekends only</label>
         </div>
