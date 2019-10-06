@@ -1,9 +1,9 @@
-from flask import Flask, Response, render_template, request, url_for, flash, redirect
+from flask import Flask, Response, render_template, request, url_for, flash, redirect # noqa
 from config import Config
 from parse import launcher
 from ticket import flask_logging
 import json
-import csv 
+import csv
 
 application = Flask(__name__)
 application.config.from_object(Config)
@@ -27,13 +27,14 @@ def home():
     return render_template("index.html",
                            stations=list(station_codes.values()))
 
+
 @application.route("/result", methods=['GET', 'POST'])
 def result():
 
     # block to grab user's input
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
     origin = request.form.get('origin')
-    destination = request.form.get('destination')   
+    destination = request.form.get('destination')
     search_limit_days = request.form.get('search_limit_days')
     return_option = request.form.get('return_option')
     weekends_only = request.form.get('weekends_only')
@@ -68,7 +69,10 @@ def result():
                   search_limit_days=search_limit_days)
 
     return render_template('result.html',
+                           origin=origin,
+                           destination=destination,
                            list_of_tickets=list_of_tickets)
+
 
 if __name__ == '__main__':
     application.run()

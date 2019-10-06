@@ -12,7 +12,7 @@
 {% endwith %}
     <form class="form-inline" method="POST" action="{{ url_for('result') }}">
         <div>
-            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true" autocomplete="off">
+            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true" autocomplete="off"><br>
             <input name="destination" list="stations" placeholder="Where to?" required="true" autocomplete="off">
                 <datalist id="stations">
                     {% for station in stations %}

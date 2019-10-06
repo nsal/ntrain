@@ -1,21 +1,28 @@
 {% extends 'base.html' %}
+<style>
+    th {text-align: center; border: 1;}
+    td {text-align: left;}
+    table {width: 100%; align-self: center}
+    
 
+</style>
 {% block content%}
     <table>
         <tr>
-            <th align='center'>Origin&emsp;</th>
-            <th align='center'>Destination&emsp;</th>
-            <th align='center'>Date&emsp;</th>
-            <th align='center'>Price&emsp;</th>
-	    <th>Link</th>
+            <th colspan="3"> The cheapest National rail ticket options <br>
+             from {{ origin }} to {{ destination }} <br>
+            </th>
+        </tr>
+        <tr>
+            <th>Date&emsp;</th>
+            <th>Price&emsp;</th>
+	        <th>Link</th>
         </tr>
 
         {% for ticket in list_of_tickets %}
         <tr>
-            <td align='center'>{{ ticket.origin }}&emsp;</td>
-            <td align='center'>{{ ticket.destination }}&emsp;</td>
-            <td align='left'>{{ ticket.date }}&emsp;</td>
-            <td align='left'>£{{ "{:6}".format(ticket.price)  }} {{ ticket.chart }}&emsp;</td>
+            <td>{{ ticket.date }}&emsp;</td>
+            <td style="width: 35%"> {{ ticket.chart }} {{ ticket.price }}&emsp;</td>
 	    <td><a target="_blank" rel="noopener noreferrer" href={{ ticket.link }}>View on National Rail</a></td>
         </tr>
         {% endfor %}

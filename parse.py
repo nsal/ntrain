@@ -21,20 +21,19 @@ def call_for_fares(l_date, origin, destination,
 
     if return_option == '999':
         link = ('http://ojp.nationalrail.co.uk/service/timesandfares/' +
-        origin + '/' + destination + '/' + leaving_date + '/' +
-        leaving_time + '/dep/')
+                origin + '/' + destination + '/' + leaving_date + '/' +
+                leaving_time + '/dep/')
 
     else:
         return_option = int(return_option) - 1
         return_date = datetime.strptime(l_date, '%d%m%y') + \
-                timedelta(days=return_option)
+            timedelta(days=return_option)
         return_date = datetime.strftime(return_date, '%d%m%y')
 
         link = ('http://ojp.nationalrail.co.uk/service/timesandfares/' +
                 origin + '/' + destination + '/' + leaving_date + '/' +
                 leaving_time + '/dep/' + return_date + '/' + return_time +
                 '/dep')
-
 
     user_agent = 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 \
                  (KHTML, like Gecko) Chrome/35.0.2117.157 Safari/537.36'
@@ -65,7 +64,9 @@ def call_for_fares(l_date, origin, destination,
 def make_chart_bar(min_price, current_price):
     """ """
     counter = int((((current_price * 100) / min_price) - 100) / 5) + 1
-    chart = '$' * counter
+    if counter > 5:
+        counter = 5
+    chart = '£' * counter
     return chart
 
 

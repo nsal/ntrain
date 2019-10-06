@@ -40,13 +40,13 @@ def define_holidays(weekends_only, search_limit_days):
     today = datetime.today()
 
     list_of_dates = [(today + timedelta(days=x)).date()
-                      for x in range(1, search_days)]
+                     for x in range(1, search_days)]
 
     if weekends_only:
-        weekends = [datetime.strftime(day, '%d%m%y') 
-                    for day in list_of_dates if day.weekday() in (5, 6) or day in bank_holidays ]
+        weekends = [datetime.strftime(day, '%d%m%y')
+                    for day in list_of_dates if day.weekday() in (5, 6) or
+                    day in bank_holidays]
         return weekends
-    
     return [datetime.strftime(day, '%d%m%y') for day in list_of_dates]
 
 
@@ -56,7 +56,7 @@ def flask_logging(ip, origin_station_code, destination_station_code,
     with open('logs/flask_access.log', 'a') as logfile:
         csv_writer = csv.writer(logfile, delimiter=',')
         timestamp = datetime.strftime(datetime.now(),
-                                               '%Y-%m-%d %H:%M:%S')
+                                      '%Y-%m-%d %H:%M:%S')
         csv_writer.writerow([timestamp,
                              ip,
                              origin_station_code,
