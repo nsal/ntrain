@@ -11,14 +11,70 @@
     {% endif %}
 {% endwith %}
     <form class="form-inline" method="POST" action="{{ url_for('result') }}">
+    <datalist id="stations">
+            {% for station in stations %}
+                <option value="{{ station }}">{{ station }}</option>
+            {% endfor %}
+        </datalist>
         <div>
-            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true" autocomplete="off"><br>
+            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true" autocomplete="off">
+            <select id="origin_departure_time" name="origin_departure_time">
+                <option value="0000"> 00:00 </option>
+                <option value="0100"> 01:00 </option>
+                <option value="0200"> 02:00 </option>
+                <option value="0300"> 03:00 </option>
+                <option value="0400"> 04:00</option>
+                <option value="0500"> 05:00 </option>
+                <option value="0600"> 06:00 </option>
+                <option value="0700" selected="selected"> 07:00 </option>
+                <option value="0800"> 08:00 </option>
+                <option value="0900"> 09:00</option>
+                <option value="1000"> 10:00 </option>
+                <option value="1100"> 11:00 </option>
+                <option value="1200"> 12:00 </option>
+                <option value="1300"> 13:00 </option>
+                <option value="1400"> 14:00</option>
+                <option value="1500"> 15:00 </option>
+                <option value="1600"> 16:00 </option>
+                <option value="1700"> 17:00 </option>
+                <option value="1800"> 18:00 </option>
+                <option value="1900"> 19:00</option>
+                <option value="2000"> 20:00 </option>
+                <option value="2100"> 21:00 </option>
+                <option value="2200"> 22:00 </option>
+                <option value="2300"> 23:00 </option>
+                <option value="2400"> 24:00</option>
+            </select>
+        </div><br>
+        <div>
             <input name="destination" list="stations" placeholder="Where to?" required="true" autocomplete="off">
-                <datalist id="stations">
-                    {% for station in stations %}
-                        <option value="{{ station }}">{{ station }}</option>
-                    {% endfor %}
-                </datalist>
+            <select id="destination_departure_time" name="destination_departure_time">
+                    <option value="0000"> 00:00 </option>
+                    <option value="0100"> 01:00 </option>
+                    <option value="0200"> 02:00 </option>
+                    <option value="0300"> 03:00 </option>
+                    <option value="0400"> 04:00</option>
+                    <option value="0500"> 05:00 </option>
+                    <option value="0600"> 06:00 </option>
+                    <option value="0700"> 07:00 </option>
+                    <option value="0800"> 08:00 </option>
+                    <option value="0900"> 09:00</option>
+                    <option value="1000"> 10:00 </option>
+                    <option value="1100"> 11:00 </option>
+                    <option value="1200"> 12:00 </option>
+                    <option value="1300"> 13:00 </option>
+                    <option value="1400"> 14:00</option>
+                    <option value="1500"> 15:00 </option>
+                    <option value="1600"> 16:00 </option>
+                    <option value="1700" selected="selected"> 17:00 </option>
+                    <option value="1800"> 18:00 </option>
+                    <option value="1900"> 19:00</option>
+                    <option value="2000"> 20:00 </option>
+                    <option value="2100"> 21:00 </option>
+                    <option value="2200"> 22:00 </option>
+                    <option value="2300"> 23:00 </option>
+                    <option value="2400"> 24:00</option>
+                </select>
         </div>
         <p></p>
         <div>

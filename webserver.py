@@ -1,7 +1,7 @@
 from flask import Flask, Response, render_template, request, url_for, flash, redirect # noqa
 from config import Config
 from parse import launcher
-from ticket import flask_logging
+from train_logging import train_logging
 import json
 import csv
 
@@ -34,7 +34,9 @@ def result():
     # block to grab user's input
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
     origin = request.form.get('origin')
+    origin_departure_time = request.form.get('origin_departure_time')
     destination = request.form.get('destination')
+    destination_departure_time = request.form.get('destination_departure_time')
     search_limit_days = request.form.get('search_limit_days')
     return_option = request.form.get('return_option')
     weekends_only = request.form.get('weekends_only')
@@ -55,15 +57,19 @@ def result():
     list_of_tickets = launcher(
         origin=origin,
         origin_station_code=origin_station_code,
+        origin_departure_time=origin_departure_time,
         destination=destination,
+        destination_departure_time=destination_departure_time,
         destination_station_code=destination_station_code,
         return_option=return_option,
         weekends_only=weekends_only,
         search_limit_days=search_limit_days)
 
-    flask_logging(ip=ip,
+    train_logging(ip=ip,
                   origin_station_code=origin_station_code,
+                  origin_departure_time=origin_departure_time,
                   destination_station_code=destination_station_code,
+                  destination_departure_time=destination_departure_time,
                   return_option=return_option,
                   weekends_only=weekends_only,
                   search_limit_days=search_limit_days)

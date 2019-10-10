@@ -6,7 +6,6 @@ Module contains:
 """
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-import csv
 
 
 @dataclass
@@ -48,19 +47,3 @@ def define_holidays(weekends_only, search_limit_days):
                     day in bank_holidays]
         return weekends
     return [datetime.strftime(day, '%d%m%y') for day in list_of_dates]
-
-
-def flask_logging(ip, origin_station_code, destination_station_code,
-                  return_option, weekends_only, search_limit_days):
-
-    with open('logs/flask_access.log', 'a') as logfile:
-        csv_writer = csv.writer(logfile, delimiter=',')
-        timestamp = datetime.strftime(datetime.now(),
-                                      '%Y-%m-%d %H:%M:%S')
-        csv_writer.writerow([timestamp,
-                             ip,
-                             origin_station_code,
-                             destination_station_code,
-                             return_option,
-                             weekends_only,
-                             search_limit_days])

@@ -11,12 +11,13 @@ list_of_tickets = []
 price_index = {}
 
 
-def call_for_fares(l_date, origin, destination,
+def call_for_fares(l_date, origin, origin_departure_time,
+                   destination, destination_departure_time,
                    return_option):
     """ Call national rails for prices """
 
-    leaving_time = '0700'
-    return_time = '1830'
+    leaving_time = origin_departure_time
+    return_time = destination_departure_time
     leaving_date = l_date
 
     if return_option == '999':
@@ -70,9 +71,9 @@ def make_chart_bar(min_price, current_price):
     return chart
 
 
-def launcher(origin, origin_station_code, destination,
-             destination_station_code, return_option,
-             weekends_only, search_limit_days):
+def launcher(origin, origin_station_code, origin_departure_time,
+             destination, destination_station_code, destination_departure_time,
+             return_option, weekends_only, search_limit_days):
     list_of_tickets.clear()
 
     calendar_holidays = define_holidays(weekends_only, search_limit_days)
@@ -81,7 +82,9 @@ def launcher(origin, origin_station_code, destination,
     pool.starmap(call_for_fares,
                  zip(calendar_holidays,
                      itertools.repeat(origin_station_code),
+                     itertools.repeat(origin_departure_time),
                      itertools.repeat(destination_station_code),
+                     itertools.repeat(destination_departure_time),
                      itertools.repeat(return_option)))
     pool.close()
     pool.join()
