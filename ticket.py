@@ -1,8 +1,8 @@
 """
 Module contains:
     dataclass Ticket
+    dataclass Two_for_one
     function define_holidays
-    function flask_logging
 """
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -10,13 +10,7 @@ from datetime import datetime, timedelta
 
 @dataclass
 class Ticket:
-    """
-    Class to store ticket data:
-        - origin
-        - destination
-        - date
-        - price
-    """
+    """ Class to store ticket data """
     origin_station_code: str
     destination_station_code: str
     date: int
@@ -31,11 +25,24 @@ class Ticket:
                on {self.date} £{self.price}"
 
 
+@dataclass
+class Two_for_one:
+    """ Class to store 2 for 1 offers details """
+    link: str
+    updated: str
+    name: str
+    station: str = None
+    location: str = None
+    price: str = None
+    expiration: str = None
+
+
 def define_holidays(weekends_only, search_limit_days):
     """ Function to find holiadys """
 
     search_days = int(search_limit_days)
-    bank_holidays = ['060519', '270519', '260919', '251219', '261219']
+    bank_holidays = ['251219', '261219', '010120', '100420', '130420',
+                     '080520', '250520', '310820', '251220', '281220']
     today = datetime.today()
 
     list_of_dates = [(today + timedelta(days=x)).date()

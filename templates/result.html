@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
+
 <style>
     th {text-align: center; border: 1;}
     td {text-align: left;}
-    table {width: 100%; align-self: center}
-    
-
+    table {width: 100%; align-self: center;}
 </style>
+
 {% block content%}
     <table>
         <tr>
@@ -27,4 +27,16 @@
         </tr>
         {% endfor %}
     </table>
+    {% if destination_offers %}
+        <h4>Psss...<br>
+        Don't forget to check 2 for 1 offers for {{ destination}}</h4>
+        <ul>
+        {% for offer in destination_offers %}
+            <li><b>Attraction: </b><a target="_blank" rel="noopener noreferrer" href={{ offer.link }}>{{ offer.name }}</a><br>
+                <b>Admission: </b>{{ offer.price }}<br>
+                <b>Address: </b>{{ offer.location }}
+                <p></p></li>
+        {% endfor %}
+        </ul>
+    {% endif%}
 {% endblock %}

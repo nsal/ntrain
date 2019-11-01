@@ -1,19 +1,36 @@
+import json
+import csv
 from flask import Flask, Response, render_template, request, url_for, flash, redirect # noqa
 from config import Config
 from parse import launcher
 from train_logging import train_logging
-import json
-import csv
+from ticket import Two_for_one
+
 
 application = Flask(__name__)
 application.config.from_object(Config)
 
 station_codes = {}
+station_postcodes = {}
+two_for_one_offers = []
 
 with open('station_codes.csv', 'r') as csv_file:
     csv_reader = csv.reader(csv_file)
     for row in csv_reader:
         station_codes[row[1]] = row[0]
+        station_postcodes[row[1]] = row[2]
+
+with open('2for1.csv', 'r') as offers_file:
+    csv_reader = csv.reader(offers_file)
+    for row in csv_reader:
+        two_for_one_offers.append(Two_for_one(
+                                  name=row[0],
+                                  station=row[1],
+                                  location=row[2],
+                                  price=row[3],
+                                  expiration=row[4],
+                                  link=row[5],
+                                  updated=row[6]))
 
 
 @application.route('/_autocomplete', methods=['GET'])
@@ -30,7 +47,6 @@ def home():
 
 @application.route("/result", methods=['GET', 'POST'])
 def result():
-
     # block to grab user's input
     ip = request.environ.get('HTTP_X_REAL_IP', request.remote_addr)
     origin = request.form.get('origin')
@@ -53,6 +69,9 @@ def result():
                            if value == origin][0]
     destination_station_code = [key for key, value in station_codes.items()
                                 if value == destination][0]
+
+    destination_offers = [offer for offer in two_for_one_offers if
+                          destination in offer.station]
 
     list_of_tickets = launcher(
         origin=origin,
@@ -77,7 +96,8 @@ def result():
     return render_template('result.html',
                            origin=origin,
                            destination=destination,
-                           list_of_tickets=list_of_tickets)
+                           list_of_tickets=list_of_tickets,
+                           destination_offers=destination_offers)
 
 
 if __name__ == '__main__':
