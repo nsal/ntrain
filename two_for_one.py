@@ -8,7 +8,16 @@ from bs4 import BeautifulSoup, SoupStrainer
 offers_link = 'https://www.daysoutguide.co.uk/sitemapxml'
 
 
-def call_website(link):
+def fill_missing_postcode(station_name: str) -> str:
+    """ Fill missing postcodes """
+    return station_postcodes[station_name.lower()] or 'None'
+
+
+def add_nearest_postcodes(postcode: str) -> list:
+    """ Add nearest postcodes """
+    pass
+
+def call_website(link: str) -> str:
     """ Get data from the website for parsing """
     r = requests.get(link)
 
@@ -18,7 +27,7 @@ def call_website(link):
     return r.text
 
 
-def get_links(html, offers_db=[]):
+def get_links(html: str, offers_db=[]) -> list:
     """Parse offers data for:
         1. offer's name
         2. offer's url
@@ -43,13 +52,13 @@ def get_links(html, offers_db=[]):
     return offers_db
 
 
-def parse_details(pattern, data):
+def parse_details(pattern: str, data: BeautifulSoup) -> dict:
     """ Parse data using the pattern. Return 'None' if failed """
     answer = re.search(pattern, data)
     return answer.group(1) if answer else 'None'
 
 
-def get_offer_details(link):
+def get_offer_details(link: str) -> dict:
     """ Create a dict with parsed data:
         1. Attraction's closest railway station
         2. Attraction's postcode
@@ -67,12 +76,16 @@ def get_offer_details(link):
                             attrs={'class': 'attraction-description__table'})
     soup = BeautifulSoup(html, 'lxml', parse_only=strainer).text
 
+    station = parse_details(station_pattern, soup)
     location = parse_details(location_pattern, soup)
 
     postcode = re.findall(postcode_pattern, location)
-    postcode = postcode[0] if postcode else 'None'
 
-    station = parse_details(station_pattern, soup)
+    try:
+        postcode = postcode[0] if postcode else fill_missing_postcode(station)
+    except KeyError:
+        postcode = 'None'
+
     price = parse_details(price_pattern, soup)
     expiration = parse_details(expiration_pattern, soup)
 
@@ -83,6 +96,29 @@ def get_offer_details(link):
 
 
 if __name__ == '__main__':
+
+    # the block to create a dict {station_name: postcode}
+    # to fill missing data
+
+    station_postcodes = {}
+
+    with open('station_codes.csv', 'r') as input_file:
+        csv_reader = csv.reader(input_file)
+        for row in csv_reader:
+            station_postcodes[row[0].lower()] = row[2]
+
+    # end block
+
+    # block to create a dict {postcode: list_of_nearest_postcodes}
+
+    nearest_postcodes = {}
+
+    with open('postcode_districts.csv', 'r') as nearest_pcode_file:
+        csv_reader = csv.reader(nearest_pcode_file)
+        for row in csv_reader:
+            nearest_postcodes[row[0]] = row[12]
+
+    # end block
 
     raw_offers_data = call_website(offers_link)
     offers_db = get_links(raw_offers_data)

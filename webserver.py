@@ -26,7 +26,7 @@ with open('2for1.csv', 'r') as offers_file:
         two_for_one_offers.append(Two_for_one(
                                   name=row[0],
                                   station=row[1],
-                                  location=row[2],
+                                  postcode=row[2],
                                   price=row[3],
                                   expiration=row[4],
                                   link=row[5],
@@ -55,7 +55,7 @@ def result():
     destination_departure_time = request.form.get('destination_departure_time')
     search_limit_days = request.form.get('search_limit_days')
     return_option = request.form.get('return_option')
-    weekends_only = request.form.get('weekends_only')
+    travel_days = request.form.get('travel_days')
     # end block
 
     # block to validate input data \ prevent users from typos
@@ -70,8 +70,11 @@ def result():
     destination_station_code = [key for key, value in station_codes.items()
                                 if value == destination][0]
 
+    destination_postcode = station_postcodes[destination_station_code]
+    destination_postcode = destination_postcode.split(' ')[0]
+
     destination_offers = [offer for offer in two_for_one_offers if
-                          destination in offer.station]
+                          destination_postcode == offer.postcode.split(' ')[0]]
 
     list_of_tickets = launcher(
         origin=origin,
@@ -81,7 +84,7 @@ def result():
         destination_departure_time=destination_departure_time,
         destination_station_code=destination_station_code,
         return_option=return_option,
-        weekends_only=weekends_only,
+        travel_days=travel_days,
         search_limit_days=search_limit_days)
 
     train_logging(ip=ip,
@@ -90,7 +93,7 @@ def result():
                   destination_station_code=destination_station_code,
                   destination_departure_time=destination_departure_time,
                   return_option=return_option,
-                  weekends_only=weekends_only,
+                  travel_days=travel_days,
                   search_limit_days=search_limit_days)
 
     return render_template('result.html',

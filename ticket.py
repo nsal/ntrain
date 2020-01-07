@@ -32,13 +32,13 @@ class Two_for_one:
     updated: str
     name: str
     station: str = None
-    location: str = None
+    postcode: str = None
     price: str = None
     expiration: str = None
 
 
-def define_holidays(weekends_only, search_limit_days):
-    """ Function to find holiadys """
+def define_holidays(travel_days, search_limit_days):
+    """ Function to find travel days """
 
     search_days = int(search_limit_days)
     bank_holidays = ['251219', '261219', '010120', '100420', '130420',
@@ -48,9 +48,13 @@ def define_holidays(weekends_only, search_limit_days):
     list_of_dates = [(today + timedelta(days=x)).date()
                      for x in range(1, search_days)]
 
-    if weekends_only:
+    travel_days_numbers = [int(day) for day in travel_days.split(',')]
+
+    # 7 is an alias for all days
+    if 7 not in travel_days_numbers:
         weekends = [datetime.strftime(day, '%d%m%y')
-                    for day in list_of_dates if day.weekday() in (5, 6) or
-                    day in bank_holidays]
+                    for day in list_of_dates if day.weekday() in
+                    travel_days_numbers or day in bank_holidays]
         return weekends
+
     return [datetime.strftime(day, '%d%m%y') for day in list_of_dates]

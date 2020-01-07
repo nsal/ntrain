@@ -1,4 +1,5 @@
 Station Name,CRS Code,Post Code
+London,London,
 Abbey Wood,ABW,SE2 9QG
 Aber,ABE,CF83 1BR
 Abercynon,ACY,CF45 4EW
@@ -98,7 +99,7 @@ Ashchurch for Tewkesbury,ASC,GL20 8JU
 Ashfield,ASF,G22 6EZ
 Ashford (Surrey),AFS,TW15 2QN
 Ashford International,AFK,TN23 1EZ
-Ashford International (Eurostar),ASI,#N/A
+Ashford International (Eurostar),ASI,TN23 1EZ
 Ashley,ASY,WA14 3QD
 Ashtead,AHD,KT21 2DR
 Ashton-under-Lyne,AHN,OL6 6JP
@@ -145,7 +146,7 @@ Bangor (Gwynedd),BNG,LL57 1LZ
 Bank Hall,BAH,L20 2AE
 Banstead,BAD,SM7 1PZ
 Barassie,BSS,KA10 6SS
-Barbican,ZBB,#N/A
+Barbican,ZBB,EC1A 4JA
 Bardon Mill,BLL,NE47 7HY
 Bare Lane,BAR,LA4 6RN
 Bargeddie,BGI,G69 7SB
@@ -650,7 +651,7 @@ Dalmuir,DMR,G81 4AJ
 Dalreoch,DLR,G82 4JT
 Dalry,DLY,KA24 4DD
 Dalston (Cumbria),DLS,CA5 7LT
-Dalston Junction,DLJ,#N/A
+Dalston Junction,DLJ,E8 3DE
 Dalston Kingsland,DLK,N16 8JN
 Dalton (Cumbria),DLT,LA15 8PL
 Dalwhinnie,DLW,PH19 1AD
@@ -726,8 +727,8 @@ Drumchapel,DMC,G15 6QX
 Drumfrochar,DFR,PA15 4NE
 Drumgelloch,DRU,ML6 7BL
 Drumry,DMY,G81 2TE
-Dublin Ferryport,DFP,#N/A
-Dublin Port - Stena,DPS,#N/A
+Dublin Ferryport,DFP,D01 H4C6
+Dublin Port - Stena,DPS,D01 H4C6
 Duddeston,DUD,B7 4ST
 Dudley Port,DDP,DY4 8RB
 Duffield,DFI,DE56 4EQ
@@ -790,7 +791,7 @@ Edenbridge,EBR,TN8 6JQ
 Edenbridge Town,EBT,TN8 5LS
 Edge Hill,EDG,L7 6ND
 Edinburgh,EDB,EH1 1BG
-Edinburgh Gateway,EGY,#N/A
+Edinburgh Gateway,EGY,EH12 9GF
 Edinburgh Park,EDP,EH11 4DF
 Edmonton Green,EDR,N9 9DX
 Effingham Junction,EFF,KT24 5HJ
@@ -798,7 +799,7 @@ Eggesford,EGG,EX18 7QT
 Egham,EGH,TW20 9NT
 Egton,EGT,YO21 1UX
 Elephant & Castle,EPH,SE17 1LB
-Elephant & Castle (Underground),ZEL,#N/A
+Elephant & Castle (Underground),ZEL,SE1 6LW
 Elgin,ELG,IV30 1QJ
 Ellesmere Port,ELP,CH65 4FG
 Elmers End,ELE,BR3 4DW
@@ -1025,7 +1026,7 @@ Haddiscoe,HAD,NR31 9JA
 Hadfield,HDF,SK13 2AQ
 Hadley Wood,HDW,EN4 0EL
 Hag Fold,HGF,M46 9SG
-Haggerston,HGG,#N/A
+Haggerston,HGG,E8 4DY
 Hagley,HAG,DY9 0NX
 Hairmyres,HMY,G74 5LW
 Hale (Manchester),HAL,WA15 9AD
@@ -1141,7 +1142,7 @@ Heyford,HYD,OX6 3PD
 Heysham Port,HHB,LA3 2XE
 High Brooms,HIB,TN2 3XE
 High Street (Glasgow),HST,G1 1QF
-High Street Kensington Underground,ZHS,#N/A
+High Street Kensington Underground,ZHS,W8 5SA
 High Wycombe,HWY,HP13 6NN
 Higham (Kent),HGM,ME3 7JQ
 Highams Park,HIP,E4 9LA
@@ -1193,7 +1194,7 @@ Hoveton & Wroxham,HXM,NR12 8UT
 How Wood (Herts),HWW,AL2 2JL
 Howden,HOW,DN14 7LD
 Howwood (Renfrewshire),HOZ,PA9 1XX
-Hoxton,HOX,#N/A
+Hoxton,HOX,E2 8FF
 Hoylake,HYK,CH47 2AB
 Hubberts Bridge,HBB,PE20 3QR
 Hucknall,HKN,NG15 8AH
@@ -1218,7 +1219,7 @@ IBM Halt,IBM,PA16 0AJ
 Ifield,IFI,RH11 0JP
 Ilford,IFD,IG1 2DG
 Ilkley,ILK,LS29 8HF
-Imperial Wharf,IMW,#N/A
+Imperial Wharf,IMW,SW8 4SR
 Ince & Elton,INE,CH2 4NE
 Ince (Manchester),INC,WN3 4RH
 Ingatestone,INT,CM4 0BH
@@ -1349,7 +1350,7 @@ Laurencekirk,LAU,AB30 1NN
 Lawrence Hill,LWH,BS5 9JD
 Layton (Lancs),LAY,FY3 7JY
 Lazonby & Kirkoswald,LZB,CA10 1BQ
-Lea Bridge,LEB,#N/A
+Lea Bridge,LEB,E10 7AG
 Lea Green,LEG,WA9 4QF
 Lea Hall,LEH,B33 8JU
 Leagrave,LEA,LU4 9BA
@@ -1453,7 +1454,7 @@ London Marylebone,MYB,NW1 6JR
 London Paddington,PAD,W2 6HT
 London Road (Brighton),LRB,BN1 4QS
 London Road (Guildford),LRD,GU1 4DQ
-London St Pancras (Intl),SPX,#N/A
+London St Pancras (Intl),SPX,N1C 4QP
 London St Pancras International,STP,NW1 2QL
 London Victoria,VIC,SW1E 5ND
 London Waterloo,WAT,SE1 7NS
@@ -1506,7 +1507,7 @@ Malvern Link,MVL,WR14 1JE
 Manchester Airport,MIA,M90 3RR
 Manchester Oxford Road,MCO,M1 6FU
 Manchester Piccadilly,MAN,M1 2PZ
-Manchester United Football Ground,MUF,#N/A
+Manchester United Football Ground,MUF,M16 0QG
 Manchester Victoria,MCV,M3 1AR
 Manea,MNE,PE15 0HQ
 Manningtree,MNG,CO11 2LH
@@ -1550,7 +1551,7 @@ Menston,MNN,LS29 6QG
 Meols,MEO,CH47 8XZ
 Meols Cop,MEC,PR9 7DD
 Meopham,MEP,DA13 0LX
-Merryton,MEY,#N/A
+Merryton,MEY,ML9 2UH
 Merstham,MHM,RH1 3AP
 Merthyr Tydfil,MER,CF47 8DH
 Merthyr Vale,MEV,CF48 4TE
@@ -1577,7 +1578,7 @@ Minffordd,MFF,LL48 6HF
 Minster,MSR,CT12 4BW
 Mirfield,MIR,WF14 8PT
 Mistley,MIS,CO11 1HG
-Mitcham Eastfields,MTC,#N/A
+Mitcham Eastfields,MTC,CR4 2ND
 Mitcham Junction,MIJ,CR4 4HN
 Mobberley,MOB,WA16 7QJ
 Monifieth,MON,DD5 4NG
@@ -1585,7 +1586,7 @@ Monks Risborough,MRS,HP27 9JQ
 Montpelier,MTP,BS6 5HA
 Montrose,MTS,DD10 8DE
 Moorfields,MRF,L2 2BL
-Moorgate,MOG,#N/A
+Moorgate,MOG,EC2M 6UR
 Moorside,MSD,M27 9RJ
 Moorthorpe,MRP,WF9 3AT
 Morar,MRR,PH40 4PB
@@ -1649,7 +1650,7 @@ New Malden,NEM,KT3 4JQ
 New Mills Central,NMC,SK22 3FB
 New Mills Newtown,NMN,SK22 3JW
 New Milton,NWM,BH25 6JS
-New Pudsey,NPD,#N/A
+New Pudsey,NPD,LS28 6QG
 New Southgate,NSG,N11 1QH
 Newark Castle,NCT,NG24 1BW
 Newark North Gate,NNG,NG24 1LP
@@ -1657,7 +1658,7 @@ Newbridge,NBE,NP11 5FH
 Newbury,NBY,RG14 7LP
 Newbury Racecourse,NRC,RG14 5UT
 Newcastle,NCL,NE1 5DL
-Newcourt,NCO,#N/A
+Newcourt,NCO,EX2 7FH
 Newcraighall,NEW,EH21 8SG
 Newhaven Harbour,NVH,BN9 0BB
 Newhaven Town,NVN,BN9 0AS
@@ -1672,7 +1673,7 @@ Newton Abbot,NTA,TQ12 2BT
 Newton Aycliffe,NAY,DL5 7BD
 Newton for Hyde,NWN,SK14 4AE
 Newton St Cyres,NTC,EX5 5AS
-Newtongrange,NEG,#N/A
+Newtongrange,NEG,EH22 4NH
 Newton-le-Willows,NLW,WA12 9SF
 Newtonmore,NWR,PH20 1AL
 Newton-on-Ayr,NOA,KA8 8LL
@@ -1862,7 +1863,7 @@ Purley,PUR,CR8 2AP
 Purley Oaks,PUO,CR2 0QA
 Putney,PUT,SW15 1TE
 Pwllheli,PWL,LL53 5HL
-Pye Corner,PYE,#N/A
+Pye Corner,PYE,NP10 9DH
 Pyle,PYL,CF33 4NL
 Quakers Yard,QYD,CF46 5NJ
 Queenborough,QBR,ME11 5AZ
@@ -1974,7 +1975,7 @@ Saltburn,SLB,TS12 1AQ
 Saltcoats,SLT,KA21 5JT
 Saltmarshe,SAM,DN14 7TW
 Salwick,SLW,PR4 0YH
-Sampford Courtenay,SMC,#N/A
+Sampford Courtenay,SMC,EX20 2SN
 Sandal & Agbrigg,SNA,WF1 5AF
 Sandbach,SDB,CW11 3GD
 Sanderstead,SNR,CR2 0YY
@@ -2017,7 +2018,7 @@ Seven Sisters,SVS,N15 5DR
 Sevenoaks,SEV,TN13 2JA
 Severn Beach,SVB,BS35 4QD
 Severn Tunnel Junction,STJ,NP26 3UN
-Shadwell,SDE,#N/A
+Shadwell,SDE,E1 2QF
 Shalford (Surrey),SFR,GU4 8BZ
 Shanklin,SHN,PO37 7AR
 Shawfair,SFI,EH22 1SB
@@ -2050,7 +2051,7 @@ Shireoaks,SRO,S81 8LW
 Shirley,SRL,B90 1AB
 Shoeburyness,SRY,SS3 9AW
 Sholing,SHO,SO19 9RD
-Shoreditch High Street,SDC,#N/A
+Shoreditch High Street,SDC, E1 6GJ
 Shoreham (Kent),SEH,TN14 7RT
 Shoreham-by-Sea,SSE,BN43 5WX
 Shortlands,SRT,BR2 0JA
@@ -2192,7 +2193,7 @@ Stow,SOI,TD1 2SQ
 Stowmarket,SMK,IP14 5AS
 Stranraer,STR,DG9 8EJ
 Stratford (London),SRA,E15 1AZ
-Stratford International,SFA,#N/A
+Stratford International,SFA,E20 1EL
 Stratford-upon-Avon,SAV,CV37 6PL
 Stratford-upon-Avon Parkway,STY,CV37 9QY
 Strathcarron,STC,IV54 8YR
@@ -2378,7 +2379,7 @@ Wandsworth Common,WSW,SW12 8PB
 Wandsworth Road,WWR,SW8 4PA
 Wandsworth Town,WNT,SW18 1SU
 Wanstead Park,WNP,E7 0HX
-Wapping,WPE,#N/A
+Wapping,WPE,E1W 3PA
 Warblington,WBL,PO9 2QH
 Ware (Herts),WAR,SG12 9UT
 Wareham (Dorset),WRM,BH20 4BG
@@ -2432,7 +2433,7 @@ West Kilbride,WKB,KA23 9DD
 West Kirby,WKI,CH48 4DZ
 West Malling,WMA,ME19 6HJ
 West Norwood,WNW,SE27 0DW
-West Ruislip,WRU,#N/A
+West Ruislip,WRU,HA4 7DP
 West Runton,WRN,NR27 9QJ
 West St Leonards,WLD,TN38 0AB
 West Sutton,WSU,SM1 2HJ
@@ -2465,7 +2466,7 @@ Whitchurch (Hants),WCH,RG28 7BZ
 Whitchurch (Shropshire),WTC,SY13 1RL
 White Hart Lane,WHL,N17 8HH
 White Notley,WNY,CM8 1RP
-Whitechapel,ZLW,#N/A
+Whitechapel,ZLW,E1 1BY
 Whitecraigs,WCR,G46 6SA
 Whitehaven,WTH,CA28 6AX
 Whitland,WTL,SA34 0AP

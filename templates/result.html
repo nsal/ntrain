@@ -34,7 +34,6 @@
         {% for offer in destination_offers %}
             <li><b>Attraction: </b><a target="_blank" rel="noopener noreferrer" href={{ offer.link }}>{{ offer.name }}</a><br>
                 <b>Admission: </b>{{ offer.price }}<br>
-                <b>Address: </b>{{ offer.location }}
                 <p></p></li>
         {% endfor %}
         </ul>
