@@ -41,9 +41,11 @@ def define_holidays(travel_days, search_limit_days):
     """ Function to find travel days """
 
     search_days = int(search_limit_days)
-    bank_holidays = ['251219', '261219', '010120', '100420', '130420',
-                     '080520', '250520', '310820', '251220', '281220']
     today = datetime.today()
+
+    bank_holidays = ['2020-04-13', '2020-05-08', '2020-05-25',
+                     '2020-08-31', '2020-12-25', '2020-12-28',
+                     '2021-01-01']
 
     list_of_dates = [(today + timedelta(days=x)).date()
                      for x in range(1, search_days)]
@@ -53,8 +55,9 @@ def define_holidays(travel_days, search_limit_days):
     # 7 is an alias for all days
     if 7 not in travel_days_numbers:
         weekends = [datetime.strftime(day, '%d%m%y')
-                    for day in list_of_dates if day.weekday() in
-                    travel_days_numbers or day in bank_holidays]
+                    for day in list_of_dates
+                    if day.weekday() in travel_days_numbers
+                    or str(day) in bank_holidays]
         return weekends
 
     return [datetime.strftime(day, '%d%m%y') for day in list_of_dates]

@@ -78,7 +78,6 @@ def launcher(origin, origin_station_code, origin_departure_time,
 
     calendar_holidays = define_holidays(travel_days, search_limit_days)
     pool = ThreadPool(12)
-
     pool.starmap(call_for_fares,
                  zip(calendar_holidays,
                      itertools.repeat(origin_station_code),
