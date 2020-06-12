@@ -8,103 +8,131 @@
         {% endfor %}
     {% endif %}
 {% endwith %}
-    <form class="form-inline" method="POST" action="{{ url_for('result') }}">
     <datalist id="stations" >
-            {% for station in stations %}
-                <option value="{{ station }}">{{ station }}</option>
-            {% endfor %}
-        </datalist>
-        <div>
-            <input name="origin" list="stations" placeholder="Where from?" autofocus="true" required="true" autocomplete="off">
-            <select id="origin_departure_time" name="origin_departure_time">
-                <option value="0000"> 00:00 </option>
-                <option value="0100"> 01:00 </option>
-                <option value="0200"> 02:00 </option>
-                <option value="0300"> 03:00 </option>
-                <option value="0400"> 04:00</option>
-                <option value="0500"> 05:00 </option>
-                <option value="0600"> 06:00 </option>
-                <option value="0700" selected="selected"> 07:00 </option>
-                <option value="0800"> 08:00 </option>
-                <option value="0900"> 09:00</option>
-                <option value="1000"> 10:00 </option>
-                <option value="1100"> 11:00 </option>
-                <option value="1200"> 12:00 </option>
-                <option value="1300"> 13:00 </option>
-                <option value="1400"> 14:00</option>
-                <option value="1500"> 15:00 </option>
-                <option value="1600"> 16:00 </option>
-                <option value="1700"> 17:00 </option>
-                <option value="1800"> 18:00 </option>
-                <option value="1900"> 19:00</option>
-                <option value="2000"> 20:00 </option>
-                <option value="2100"> 21:00 </option>
-                <option value="2200"> 22:00 </option>
-                <option value="2300"> 23:00 </option>
-                <option value="2400"> 24:00</option>
-            </select>
-        </div><br>
-        <div>
-            <input name="destination" list="stations" placeholder="Where to?" required="true" autocomplete="off">
-            <select id="destination_departure_time" name="destination_departure_time">
+        {% for station in stations %}
+            <option value="{{ station }}">{{ station }}</option>
+        {% endfor %}
+    </datalist>
+    <br>
+    <div class="container h-100 ml-1 mr-0">
+    <form method="POST" action="{{ url_for('result') }}">
+        <div class="row p-2">
+            <div class="col-7 text-left">
+                <input name="origin" list="stations" placeholder="Where from?" style="height:38px" autofocus="true" required="true" autocomplete="off">
+            </div>
+            <div class="col-5 text-right">
+                <select id="origin_departure_time" class="form-control" style="text-align-last:center" name="origin_departure_time">
                     <option value="0000"> 00:00 </option>
                     <option value="0100"> 01:00 </option>
                     <option value="0200"> 02:00 </option>
                     <option value="0300"> 03:00 </option>
-                    <option value="0400"> 04:00</option>
+                    <option value="0400"> 04:00 </option>
                     <option value="0500"> 05:00 </option>
                     <option value="0600"> 06:00 </option>
-                    <option value="0700"> 07:00 </option>
+                    <option value="0700" selected="selected"> 07:00 </option>
                     <option value="0800"> 08:00 </option>
-                    <option value="0900"> 09:00</option>
+                    <option value="0900"> 09:00 </option>
                     <option value="1000"> 10:00 </option>
                     <option value="1100"> 11:00 </option>
                     <option value="1200"> 12:00 </option>
                     <option value="1300"> 13:00 </option>
-                    <option value="1400"> 14:00</option>
+                    <option value="1400"> 14:00 </option>
                     <option value="1500"> 15:00 </option>
                     <option value="1600"> 16:00 </option>
-                    <option value="1700" selected="selected"> 17:00 </option>
+                    <option value="1700"> 17:00 </option>
                     <option value="1800"> 18:00 </option>
-                    <option value="1900"> 19:00</option>
+                    <option value="1900"> 19:00 </option>
                     <option value="2000"> 20:00 </option>
                     <option value="2100"> 21:00 </option>
                     <option value="2200"> 22:00 </option>
                     <option value="2300"> 23:00 </option>
-                    <option value="2400"> 24:00</option>
+                    <option value="2400"> 24:00 </option>
                 </select>
+            </div>
         </div>
-        <p></p>
-        <div>
-            <label for="return_option">Return: </label>
-            <select id="return_option" name="return_option">
-                <option value="999"> One way </option>
-                <option value="1" selected="selected" > Same day </option>
-                <option value="2"> Next day </option>
-                <option value="3"> +2 days </option>
-                <option value="4"> +3 days </option>
-                <option value="8"> +7 days </option>
-                <option value="9"> +7 days </option>
-                <option value="14"> +13 days </option>
-                <option value="15"> +14 days </option>
-            </select>
+        <div class="row p-2">
+            <div class="col-12 text-left">
+                <input name="destination" list="stations" placeholder="Where to?" required="true" style="height:38px" autocomplete="off">
+            </div>
+            
         </div>
-        <p></p>
-        <div>
-            <label for="search_limit_days">I'm travelling within: </label>
-            <select id="search_limit_days" name="search_limit_days">
-                <option value="31"> 1 month</option>
-                <option value="61" selected="selected" > 2 months </option>
-                <option value="84"> 3 months</option>
-            </select>
+        <div class="row p-2">
+            <div class="col-3">
+                <div class="p-2 h6">Return:</div>
+            </div>
+            <div class="col-5 text-right">
+                <select id="return_option" class="form-control" style="text-align-last:center"  name="return_option">
+                    <option value="999"> One way </option>
+                    <option value="1" selected="selected" > Same day </option>
+                    <option value="2"> Next day </option>
+                    <option value="3"> +2 days </option>
+                    <option value="4"> +3 days </option>
+                    <option value="8"> +7 days </option>
+                    <option value="9"> +7 days </option>
+                    <option value="14"> +13 days </option>
+                    <option value="15"> +14 days </option>
+                </select>
+            </div>
+            <div class="col-4 text-right">
+                <select id="destination_departure_time" class="form-control" style="text-align-last:center" name="destination_departure_time">
+                    <option value="0000"> 00:00 </option>
+                    <option value="0100"> 01:00 </option>
+                    <option value="0200"> 02:00 </option>
+                    <option value="0300"> 03:00 </option>
+                    <option value="0400"> 04:00 </option>
+                    <option value="0500"> 05:00 </option>
+                    <option value="0600"> 06:00 </option>
+                    <option value="0700"> 07:00 </option>
+                    <option value="0800"> 08:00 </option>
+                    <option value="0900"> 09:00 </option>
+                    <option value="1000"> 10:00 </option>
+                    <option value="1100"> 11:00 </option>
+                    <option value="1200"> 12:00 </option>
+                    <option value="1300"> 13:00 </option>
+                    <option value="1400"> 14:00 </option>
+                    <option value="1500"> 15:00 </option>
+                    <option value="1600"> 16:00 </option>
+                    <option value="1700" selected="selected"> 17:00 </option>
+                    <option value="1800"> 18:00 </option>
+                    <option value="1900"> 19:00 </option>
+                    <option value="2000"> 20:00 </option>
+                    <option value="2100"> 21:00 </option>
+                    <option value="2200"> 22:00 </option>
+                    <option value="2300"> 23:00 </option>
+                    <option value="2400"> 24:00 </option>
+                </select>
+            </div>
         </div>
-        <div class="style-br">
-            <input type="radio" name="travel_days" value="5,6" checked="true">Weekends only<br />
-            <input type="radio" name="travel_days" value="4,5,6"> Friday and weekends<br />
-            <input type="radio" name="travel_days" value="7"> Everyday<br />
+        <div class="row p-2">
+            <div class="col-7">
+                <div class="p-2 h6">I'm travelling within:</div>
+            </div>
+            <div class="col-5 text-right">
+                <select id="search_limit_days" name="search_limit_days" class="form-control" style="text-align-last:center">
+                    <option value="31"> 1 month </option>
+                    <option value="61" selected="selected"> 2 months </option>
+                    <option value="84"> 3 months </option>
+                </select>
+            </div>
         </div>
-        <p><button type="submit" class="btn btn-default">Search</button></p> 
-         
+        <div class="row">
+            <div class="col-5 text-right h6">on:</div>
+            <div class="col-7 radio text-left">
+                <div class="row">
+                    <div class="col-12"><input type="radio" name="travel_days" value="5,6" checked="true">Weekends only<br /></div>
+                </div>
+                <div class="row">
+                    <div class="col-12"><input type="radio" name="travel_days" value="4,5,6"> Friday and weekends<br /></div>
+                </div>
+                <div class="row">
+                    <div class="col-12"><input type="radio" name="travel_days" value="7"> Everyday<br /></div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-12 text-right"><input type="submit" class="btn btn-primary" value="Search"></div>
+        </div>        
     </form>
+    </div>
      
 {% endblock %}
