@@ -36,7 +36,7 @@
     {% endif %}
     <div class="list-group list-group-flush">
     {% for offer in destination_offers %}
-        <a href="{{ offer.link}}" class="list-group-item list-group-item-action borderless">&#9733; {{ offer.name }}. <b>Admission: </b>{{ offer.price }}</a>
+        <a href="{{ offer.link}}" target="blank" class="list-group-item list-group-item-action borderless">&#9733; {{ offer.name }}. <b>Admission: </b>{{ offer.price }}</a>
     {% endfor %}
     </div>
 </div>
