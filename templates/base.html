@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <style type="text/css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous">
+    </script>
+    <!-- <style type="text/css">
         .style-br {
             display: block;
             line-height: 150%;
@@ -18,7 +22,7 @@
             bottom: 10px;
             width: 100%;
         }
-    </style>
+    </style> -->
     {% if title%}
     <title>Rail Cheap - {{ title }}</title>
     {% else %}
@@ -30,14 +34,10 @@
 </head>
 
 <body>
-    <div><h6>Rail Cheap: <a href="{{ url_for('home')}}">Home</a></h6></div>
-    <hr>
+    <div class="p-2 h6">Rail Cheap: <a href="{{ url_for('home')}}">Home</a></div>
     {% block content %} {% endblock %}
-    <div class="footer">#FTD2020 by Nikolay Salionov</div>
+    <!-- <div class="footer">#FTD2020 by Nikolay Salionov</div> -->
 </body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
     integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
     crossorigin="anonymous"></script>

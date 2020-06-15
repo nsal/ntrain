@@ -1,13 +1,49 @@
 {% extends 'base.html' %}
 
-<style>
-    th {text-align: center; border: 1;}
-    td {text-align: left;}
-    table {width: 100%; align-self: center;}
-</style>
-
 {% block content%}
-    <table>
+<script type="text/javascript">
+    $(document).ready(function($) {
+        $(".table-row").click(function() {
+            window.document.location = $(this).data("href") + "/?target=_blank";
+        });
+    });
+    </script>
+<div class="container h-100 ml-1 mr-0">
+    <div class="row p-2">
+        <div class="col-12 text-center h6">National Rail travel options from {{ origin }} to {{ destination }}</div>
+    </div>
+    <table class="table table-condensed table-striped table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">Date</th>
+                <th class="text-center">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ticket in list_of_tickets %}
+            <tr class='table-row' data-href="{{ ticket.link }}">
+                <td>{{ ticket.date }}</td>
+                <td>{{ ticket.chart }} {{ ticket.price }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    {% if destination_offers %}
+    <div class="row">
+        <div class="col-12 h6 text-center">Psss... Don't forget to check 2 for 1 offers for {{ destination}}</div>
+    </div>
+    {% endif %}
+    <div class="list-group list-group-flush">
+    {% for offer in destination_offers %}
+        <a href="{{ offer.link}}" class="list-group-item list-group-item-action borderless">&#9733; {{ offer.name }}. <b>Admission: </b>{{ offer.price }}</a>
+    {% endfor %}
+    </div>
+</div>
+<br>
+<br>
+    
+    <!-- <table>
         <tr>
             <th colspan="3"> The cheapest National rail ticket options <br>
              from {{ origin }} to {{ destination }} <br>
@@ -37,5 +73,5 @@
                 <p></p></li>
         {% endfor %}
         </ul>
-    {% endif%}
+    {% endif%} -->
 {% endblock %}
